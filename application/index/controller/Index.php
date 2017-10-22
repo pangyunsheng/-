@@ -50,6 +50,11 @@ class Index extends Controller
 
 	}
 
+	public fuck()
+	{
+		
+	}
+
 	//退出登录
 	public function logout()
 	{
