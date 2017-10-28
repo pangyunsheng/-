@@ -4,12 +4,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="description" content="“订饭组（dingfanzu.com）”是北京地区知名的在线外卖订餐O2O平台，是写字楼白领专属订餐网站。已覆盖北京数百个写字楼，数十万用户，聚集了数千家餐饮商户。订外卖，找订饭组。" />
+
         <script src="__JS_PATH__baidu_js_push.js"></script>
         <script src="__JS_PATH__jquery-1.8.3.js"></script>
         <script src="__JS_PATH__jquery.reveal.js"></script>
         <script src="__JS_PATH__jquery.cookie.js"></script>
 
-        <link rel="icon" href="/static/img/logo-50-50.jpg" type="image/x-icon" /> 
+        <link rel="icon" href="/static/img/logo-50-50.jpg" type="image/x-icon" />
+         
         <link rel=stylesheet href="__CSS_PATH__reset.css">
         <link rel=stylesheet href="__CSS_PATH__common.css">
         <link rel=stylesheet href="__CSS_PATH__base.css"> 
@@ -52,7 +54,7 @@
 
                     <span class="header-operater">
                     <a href="/">外卖</a>
-                    <a href="/account/order">我的订单</a>
+                    <a href="/index/User/order">我的订单</a>
                     <a href="/about.html?p=lianxiwomen">联系我们</a> 
                     </span> 
                     <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
@@ -60,9 +62,13 @@
                     </a>
                     <a id="header-user"></a>
                 </div>
+
+                <!-- 购物车 -->
                 <div id="cart" class="cart fr"> 
                     <img class="cart-icon" src="__IMG_PATH__/icon_cart_22_22.png">
                 </div>
+
+                <!-- 用户头像 -->
                 <div id="user" class="user fr n">
                     <img class="user-icon" src="__IMG_PATH__/icon_my.png"> 
                 </div> 
@@ -70,14 +76,40 @@
 			
 			<!-- 登录后在 --头顶部icon_my.png头像--显示 -->
             <ul id="subnav" class="subnav subnav-shadow n">
-                <li><a href="/account/setting" target="">账号设置</a></li>
-                <li><a href="/account/order" target="">我的订单</a></li>
-                <li><a href="/account/balance" target="">我的余额</a></li>
-                <li><a href="/account/score" target="">我的积分</a></li>
-                <li><a href="/account/address" target="">我的地址</a></li>
+                <li><a href="/index/Setting/setting" target="">账号设置</a></li>
+                <li><a href="/index/OrderList/order" target="" id="order">我的订单</a></li>
+                <li><a href="/index/User/balance" target="">我的余额</a></li>
+                <li><a href="/index/Jifen/score" target="">我的积分</a></li>
+                <li><a href="/index/Address/address" target="">我的地址</a></li>
                 <li><a id="sub-logout" href="" target="">退出</a></li>
             </ul>
         </div>
+
+
+<!--------------------------- 购物车展示 -------------------------------->
+            <div class="shop-cart shadow n">
+                <div class="shop-head">
+                    购物车<a class="shop-clear">[清空]</a>
+                </div>
+                <div class="shop-body">    
+                    
+
+                    <div class="isnull">
+                        <span></span>
+                        <b>购物车空空如也</b>
+                    </div>
+                </div>
+                <div class="shop-bottom">
+                    <div class="bottom-price fl">总计：￥<label>32</label>
+                    </div>
+                    <div class="bottom-icon"></div>
+                    <div class="bottom-pay fr">
+                        <a id="cart-pay">结算</a>
+                    </div>
+                </div>
+        </div>
+<!--------------------------- 购物车展示结束 -------------------------------->
+
         <!--内容部分-->
         <div class="place-content"> 
             
@@ -213,28 +245,12 @@
                   </div>
                   <div class="footer-content-copyright">©2016 dingfanzu.com <a target="_blank">京ICP证020666号</a> </div>
             </div>
+            
 
-            <div class="shop-cart shadow n">
-                <div class="shop-head">
-                    购物车<a class="shop-clear">[清空]</a>
-                </div>
-                <div class="shop-body">    
-                    
 
-                    <div class="isnull">
-                        <span></span>
-                        <b>购物车空空如也</b>
-                    </div>
-                </div>
-                <div class="shop-bottom">
-                    <div class="bottom-price fl">总计：￥<label>32</label>
-                    </div>
-                    <div class="bottom-icon"></div>
-                    <div class="bottom-pay fr">
-                        <a id="cart-pay">结算</a>
-                    </div>
-                </div>
-        </div>
+
+
+
         
         <ul  class="place-nav n">
                 <li><a class="city">北京</a></li>
@@ -390,125 +406,125 @@
     
     <!-- 如果用户名存在且cookie没有过期 -->
     <script>
-        if($.cookie('userId'))
-        {
-            var userId=$.cookie('userId');
-            $('#header-user').html('hi，'+userId);
-            $('#header-user').show();
-            $('#header-login').hide(); 
-            $('#user').show();
-        }
+        $(function(){
+
+            // cookie用户信息
+            if($.cookie('userId'))
+            {
+                var userId=$.cookie('userId');
+                $('#header-user').html('hi，'+userId);
+                $('#header-user').show();
+                $('#header-login').hide(); 
+                $('#user').show();
+            }
+
+             //初始化购物车
+            initCart();
+
+            //footer
+            processFooter();
+
+            //地址悬浮
+            $(".place-cc a,.place-nav").hover(function() { 
+                $('.place-nav').show();
+            }, function() {
+            $('.place-nav').hide();
+            });
+            
+            //购物车相关 
+            var shopCartWidth=$(".shop-cart").width(); 
+
+            //默认隐藏购物车
+            $(".shop-cart,.shop-bottom").css("right",-shopCartWidth); 
+            var mRight=-shopCartWidth;
+            
+            $("#cart").click(function(){
+                $('.shop-cart').show(); 
+                //适配购物车
+                processShopItem();
+                
+                shopCartWidth=$(".shop-cart").width();
+                if(mRight=='0px'){
+                    mRight=-shopCartWidth;
+                    $(".shop-cart,.shop-bottom").animate({right:mRight},200);
+                }
+                else{
+                    mRight='0px';
+                    $(".shop-cart,.shop-bottom").animate({right:mRight},200);
+                }
+            });
+        });
+  
     </script>
     
-
+    <!-- 地址位置 -->
     <script>
-                $(function(){
-   
+    $(function(){
 
-                    //初始化购物车
-                    initCart();
+        //中间高 
+        var zw=$(window).width();
+        var middleWidth=$('.place-wrap').width();
+        var middleHeight=$('.place-wrap').height();
+        var marginLeft=(zw-middleWidth)/2; 
+        $(".place-wrap-1").css("marginLeft",marginLeft); 
+        $(".place-wrap-1").show(); 
 
-                    //footer
-                    processFooter();
+        //地址选择悬浮
+        $(".place-nav").css("left",marginLeft+32);//再加32
+        //地址点击
+        $('.city').click(function(event) {
+            if($(this).text()!="北京"){ 
+             showAlert("该城市未开通");
+            }else{
+                window.location.reload();
+            }
+        });
 
-                    //地址悬浮
-                    $(".place-cc a,.place-nav").hover(function() { 
-                        $('.place-nav').show();
-                    }, function() {
-                    $('.place-nav').hide();
-                    });
-                    
-                    //购物车相关 
-                    var shopCartWidth=$(".shop-cart").width(); 
-                    //默认隐藏购物车
-                    $(".shop-cart,.shop-bottom").css("right",-shopCartWidth); 
-                    var mRight=-shopCartWidth;
-                    
-                    $("#cart").click(function(){
-                        $('.shop-cart').show(); 
-                        //适配购物车
-                        processShopItem();
-                        
-                        shopCartWidth=$(".shop-cart").width();
-                        if(mRight=='0px'){
-                            mRight=-shopCartWidth;
-                            $(".shop-cart,.shop-bottom").animate({right:mRight},200);
-                        }
-                        else{
-                            mRight='0px';
-                            $(".shop-cart,.shop-bottom").animate({right:mRight},200);
-                        }
-                    });
+        //弹出动画
+        $(".place-wrap").animate({"opacity":"0.9"}, 200);
 
-                     
+        $(window).resize(function(){
+            //中间高 
+            var zw=$(window).width();
+            var middleWidth=$('.place-wrap').width();
+            var middleHeight=$('.place-wrap').height();
+            var marginLeft=(zw-middleWidth)/2; 
+            $(".place-wrap-1").css("marginLeft",marginLeft); 
+            //地址选择悬浮
+            $(".place-nav").css("left",marginLeft+32);
 
+            //适配购物车
+            processShopItem();
 
-                    //中间高 
-                    var zw=$(window).width();
-                    var middleWidth=$('.place-wrap').width();
-                    var middleHeight=$('.place-wrap').height();
-                    var marginLeft=(zw-middleWidth)/2; 
-                    $(".place-wrap-1").css("marginLeft",marginLeft); 
-                    $(".place-wrap-1").show(); 
+            $('.shop-cart').hide();
+            var shopCartWidth=$(".shop-cart").width(); 
+            //默认隐藏购物车
+            $(".shop-cart,.shop-bottom").css("right",-shopCartWidth); 
+            mRight=-shopCartWidth;
 
-                    //地址选择悬浮
-                    $(".place-nav").css("left",marginLeft+32);//再加32
-                    //地址点击
-                    $('.city').click(function(event) {
-                        if($(this).text()!="北京"){ 
-                         showAlert("该城市未开通");
-                        }else{
-                            window.location.reload();
-                        }
-                    });
+            processFooter();
+        });
+     
 
-                    //弹出动画
-                    $(".place-wrap").animate({"opacity":"0.9"}, 200);
+            //tab点击事件
+            $('.place-tab a').click(function(){
+                //变样式
+                var cl=$(this).parents('.place-tab').find('a');
+                cl.removeClass('alive');
+                $(this).addClass('alive');
+                var pid=$(this).attr('id');
+                $('.place-names').hide();
+                var n="#"+pid.replace('t','n');
+                $(n).show();
+            });
+        });
 
-                     
-
-
-                    $(window).resize(function(){
-                        //中间高 
-                        var zw=$(window).width();
-                        var middleWidth=$('.place-wrap').width();
-                        var middleHeight=$('.place-wrap').height();
-                        var marginLeft=(zw-middleWidth)/2; 
-                        $(".place-wrap-1").css("marginLeft",marginLeft); 
-                        //地址选择悬浮
-                        $(".place-nav").css("left",marginLeft+32);
-
-                        //适配购物车
-                        processShopItem();
-
-                        $('.shop-cart').hide();
-                        var shopCartWidth=$(".shop-cart").width(); 
-                        //默认隐藏购物车
-                        $(".shop-cart,.shop-bottom").css("right",-shopCartWidth); 
-                        mRight=-shopCartWidth;
-
-                        processFooter();
-                    });
-                 
-
-                        //tab点击事件
-                        $('.place-tab a').click(function(){
-                            //变样式
-                            var cl=$(this).parents('.place-tab').find('a');
-                            cl.removeClass('alive');
-                            $(this).addClass('alive');
-                            var pid=$(this).attr('id');
-                            $('.place-names').hide();
-                            var n="#"+pid.replace('t','n');
-                            $(n).show();
-                        });
-                    });
-
-                    function processFooter(){
-                        var zh=$(document.body).height(); 
-                        $(".footer-content").css('top', zh-60);
-                        $(".footer-content").show();
-                    }
+        function processFooter(){
+            var zh=$(document.body).height(); 
+            $(".footer-content").css('top', zh-60);
+            $(".footer-content").show();
+        }
     </script>
+
 </body>
 </html>

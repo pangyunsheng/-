@@ -9,8 +9,8 @@
 
 function checkIfLogin(){
     var userId=$.cookie('userId');
-    if(!userId){ 
-        location.href="/place.html";//跳到首页
+    if(!userId){
+        location.href = document.referrer;//未登录跳转回来源页地址
     }
 }
 

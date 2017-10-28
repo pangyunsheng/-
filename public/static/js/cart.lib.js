@@ -22,7 +22,7 @@ function plusItem(shopId,itemId,name,count,price){
             txt=JSON.stringify(arrObj); 
             $.cookie('cart'+shopId,txt,{expires:1,path:'/'});//写cookie
         }else{//不存在 
-            obj={itemId:itemId,name:stringToHex(name),count:count,price:price}; 
+            obj={itemId:itemId,name:name,count:count,price:price}; 
             arrObj.push(obj);
             txt=JSON.stringify(arrObj);
             $.cookie('cart'+shopId,txt,{expires:1,path:'/'});//写cookie 
@@ -30,7 +30,7 @@ function plusItem(shopId,itemId,name,count,price){
     } 
     else{
         arrObj=new Array();//新建数组
-        obj={itemId:itemId,name:stringToHex(name),count:count,price:price};
+        obj={itemId:itemId,name:name,count:count,price:price};
         arrObj.push(obj);
         txt=JSON.stringify(arrObj);
         $.cookie('cart'+shopId,txt,{expires:1,path:'/'});//写cookie 

@@ -16,13 +16,24 @@
     //清空购物车
     $(document).on('click','.shop-clear',function(){
         clearCart();
+
+        // 同时清空数据表的信息，未支付的订单
+        $username = $.cookie('userId');
+        $shop_id = $.cookie('shopId');
+        $.post(
+            '/index/Order/clear_cart',
+            {username:$username,shopId:$shop_id},
+            function(data){
+                
+            }
+        );
     });
-    //加
+    //加(点+号的时候)
     $(document).on('click','.plus',function(){
         var itemId=$(this).parents('.shop-item').attr('item-id');
         addCart(itemId);
     }); 
-    //减
+    //减（点-号的时候）
     $(document).on('click','.minus',function(){
         var itemId=$(this).parents('.shop-item').attr('item-id');
         deleteCart(itemId);
@@ -52,16 +63,18 @@
         
     });
 
-    //结算按钮
-    $('#cart-pay').click(function(event) {
-        var userId=$.cookie('userId');
-        if(userId){ //已登录
-             location.href="/order_confirm.html";
-        }else{ 
-            $('#header-login').trigger('click');
-        }
-    });
-    })(jQuery);
+//++++++++++++++  结算按钮 +++++++++++++++++++++++++++++++++++++++//
+
+    // $('#cart-pay').click(function(event) {
+    //     var userId=$.cookie('userId');
+    //     if(userId){ //已登录
+    //          location.href="/index/Order/order_confirm";
+    //     }else{ 
+    //         //未登录跳出登录页面（自动绑定点击事件）
+    //         $('#header-login').trigger('click');
+    //     }
+    // });
+})(jQuery);
         
     //计算总价
     function setTotalPrice(){
@@ -90,13 +103,14 @@
             $('.bottom-pay').show();//显示"结算"
         }
     }
+
     //飞入效果
     function fly(startX,startY,itemId,spd){
         var zh=$(window).height();
         var zw=$(window).width();
 
          
-        var img = "images/round_24.png";
+        var img = "/static/img/round_24.png";
         var flyer = $('<img class="u-flyer" src="'+img+'">');
         flyer.fly({
             start: {
@@ -147,21 +161,27 @@
                     $('.shop-body').append(htmlTxt); 
                 }
                 //--------------底部总价---------
-                setTotalPrice();
+             
             }
             
         }
     }
 
     //添加购物车
-    function addCart(itemId){ 
+    function addCart(itemId){
+
         //buy处的信息
         var obj1=$(".menu-item[item-id='"+itemId+"']");
         var price=obj1.find('.price').attr("item-price");
         var name=obj1.find('.name').text();
 
+        // console.log(obj1);
+        // console.log(price);
+        // console.log(name);
+
         //购物车处的信息
         var obj2=$(".shop-item[item-id='"+itemId+"']");
+        // console.log(obj2);
         //是否已存在
         if(!obj2.html()){
             var htmlTxt="<div class='shop-item-wrap'>"
@@ -197,11 +217,14 @@
         setTotalPrice();
         //加到cookie
         var shopId=$.cookie('shopId');
-        if(shopId){  
+        if(shopId){
+
+          // 方法在cart.lib.js里面
             plusItem(shopId,itemId,name,1,price);
         }
     }
 
+    //减
     function deleteCart(itemId){
         //购物车处的信息
         var obj=$(".shop-item[item-id='"+itemId+"']");

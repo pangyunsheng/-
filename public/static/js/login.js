@@ -86,8 +86,10 @@ function checkin(phone,pwd){
                     $('#header-user').show();
                     $('#header-login').hide(); 
                     $('#user').show();
+
+                    location.reload(); //登录后刷新重载一下，主要为了加载用户购物车的信息
                     //加载我的信息
-                    // loadMyInfo();
+                    loadMyInfo();
 
                 }else if($res.code=="1"){
                     $('#login-phone-error').text('该用户不存在');
@@ -167,7 +169,7 @@ function create(phone,pwd){
                     $('#user').show();
 
                     //加载我的信息
-                    // loadMyInfo();
+                    loadMyInfo();
                 }
 
                 // else if($res.code=="1"){
@@ -414,14 +416,15 @@ function checkIfLogin(){
     var postUrl="/ajax/checkLogin.php";
     $.post(postUrl, 
         '', 
-        function(data, status, xhr) {  
-           if(status=="success"){   
-                $res= $.parseJSON(data); 
-                if($res.code=="0"){ //已登录 
+        function(data) { 
+           var res= $.parseJSON(data); 
+           if(res.status=="success"){   
+                 
+                if(res.code=="0"){ //已登录 
                     var userId=$.cookie('userId'); 
                     $('#header-login').hide();
                     $('#user').show();
-                }else if($res.code=="1"){ //未登录 
+                }else if(res.code=="1"){ //未登录 
                     $('#user').hide();
                     $('#header-login').show();
                 }

@@ -107,7 +107,7 @@ body{
 
 .stars .full{
     display:inline-block;
-    background:url(../Images/icon_full_star.png) no-repeat;
+    background:url(/static/img/icon_full_star.png) no-repeat;
     width:20px;
     height:20px;
 }*/
@@ -133,8 +133,8 @@ body{
     width: 20px;
     height: 16px;
     display: inline-block;
-    background: url(../Images/icon_star_green.png);
+    background: url(/static/img/icon_star_green.png);
 }
 .stars li.active {
-    background: url(../Images/icon_star_red.png);
+    background: url(/static/img/icon_star_red.png);
 }

@@ -1,0 +1,281 @@
+﻿body{ font-size:12px;padding:0;margin:0;text-align:center}
+div,p,h,li,h2,h3,h4,form{margin:0;padding:0}
+li{list-style:none}
+img{border:0}
+a:link, a:visited, a:hover{text-decoration:none;color:#333;}
+/************�¿����*************/
+.bottom_bar{
+	font-size:12px;
+	width:100%;
+	height:100px;
+	background-color: rgb(250, 250, 250);
+	text-align:left;
+	min-width:960px;
+	border-top:1px solid rgb(238,238,238);
+	display:inline-block;
+	float:left;
+	z-index:3;
+}
+.bottom_logo{
+	width:160px;
+	height:100px;
+	text-align:left;
+	float:left;
+	margin-top:10px;
+	margin-left:10px;
+}
+.bottom_link{
+	width:500px;
+	height:100px;
+	margin-left:130px;
+	font-size:12px;
+	font-color:#c0c0c0220220220;
+	float:left;
+	color:rgb(153,153,153);
+	padding:25px 0;
+}
+.bottom_link_font{
+	color:rgb(153,153,153);
+	font-size:14px;
+}
+/************ע��ҳ��*************/
+.container{ padding:5px 0;width:960px; text-align:left; margin:0 auto;color:#464646;position: relative;}
+#registerbut{
+	width:250px;
+	height:30px;
+	background:rgb(245,161,0);
+	border-radius: 4px 4px 4px 4px;
+	text-align:center;
+	margin-top:20px;
+	margin-left:35px;
+}
+.top-banner .background {
+    background-color: #ff9b37;
+    height: 46px;
+}
+.top-banner .logo {
+	position: absolute;
+    top: 0px;
+    left: 215px;
+	display: inline-block;
+	border: 2px solid rgb(238, 238, 238);
+    width:150px;
+    height: 44px;
+}
+.top-banner .login {
+	text-align: center;
+	position: absolute;
+    top: 0px;
+    right: 215px;
+    float:right;
+	display: inline-block;
+	border: 2px solid rgb(238, 238, 238);
+    width:150px;
+    height: 44px;
+    line-height: 44px;
+}
+.top-banner .login .font{
+	font-size:12px;
+	color:#ffffff;
+}
+.top_citychoose{
+	font-size:12px;
+	text-align:center;
+	width:100%;
+	height:40px;
+	background-color:#ff9b37;
+	text-align:left;
+	line-height: 40px;
+}
+.top_citychoose .img{
+	width:50px;
+	height:30px;
+	border:2px solid rgb(220, 220, 220);
+	background-color:white;
+	margin-top:5px;
+}
+.top_citychoose .a_div{
+	font-size:14px;
+	color:white;
+}
+.register_table{
+	margin-top:30px;
+	width:500px;
+}
+.register_table .td_font{
+	text-align:right;
+	font-size:14px;
+	padding-right:10px;
+}
+.register_table .td_input{
+	width:250px;
+	height:35px;
+	border:1px solid rgb(238,238,238);
+	outline:none;
+	padding-left:5px;
+	display:inline-block;
+}
+.code_input{
+	width:100px;
+	height:35px;
+	border:1px solid rgb(238,238,238);
+	outline:none;
+	padding-left:5px;
+	display:inline-block;
+	float:left;
+	margin-top:5px;
+}
+.vCode_div{
+	width:90px;
+	height: 35px; 
+	border: 1px solid rgb(238,238,238);
+	display: inline-block;
+	font-size:16px;
+	margin-left:5px;
+	margin-top:5px;
+}
+/************��������ҳ��*************/
+
+#resetpwdbut{
+	width:255px;
+	height:30px;
+	background:#ff8900;
+	border-radius: 4px 4px 4px 4px;
+	text-align:center;
+	margin-top:20px;
+	margin-left:35px;
+}
+.resetpassword_table{
+	margin-top:30px;
+	width:500px;
+}
+.resetpassword_table .td_font{
+	float: right;
+	font-size:14px;
+	margin-right:20px;
+	margin-top:20px;
+}
+.resetpassword_table .td_input{
+	margin-top:20px;
+	width:250px;
+	height:30px;
+}
+.resetpassword_table .getvam_font{
+	margin-top:20px;
+	width:250px;
+	height:30px;
+}
+.resetpassword_table .getnum_div{
+	margin-top:5px;
+	border-radius: 4px;
+	width:150px;
+	height:20px;
+	background:#e9e9e9;
+	text-align:center;
+}
+.goshopping{
+	
+	width:100px;
+	height:50px;
+	background:#ff8900;
+	text-align:center;
+	display: inline-block;
+	line-height: 50px;
+	margin-left:105px;
+	position: absolute;
+	color:white;
+	font-size:20px;
+	border-radius: 4px 4px 4px 4px;
+}
+.nummask_div{
+	z-index:1;
+	width:100%;
+	display:none;
+	height:100%;
+	position:fixed;
+	opacity:0.3; 
+	filter: alpha(opacity=30); 
+	background-color:#000;
+}
+.numground_div{
+	display:none;
+	background: #fff;
+	width:310px;
+	height:150px;
+	margin:15% 0 0 40%;
+	position:fixed;
+	z-index:99;
+	text-align:center;
+}
+.code2_input{
+	width:150px;
+	height:40px;
+	margin:20px 0 0 20px;
+	border:1px solid rgb(238,238,238);
+	outline:none;
+	padding-left:15px;
+	font-size:16px;
+	display:inline-block;
+	float:left;
+}
+.code2_input:focus{
+	border:1px solid rgb(245,161,0);
+}
+.code2_div{
+	width:100px; 
+	height: 40px; 
+	border: 1px solid rgb(245,161,0);
+	margin:10px 0 0 5px;
+	display: inline-block;
+	top:10px;
+	float:left;
+	margin-bottom:15px;
+}
+#loginbut{
+	width:290px;
+	height:40px;
+	background: rgb(245,161,0);
+	border-radius: 2px 2px 2px 2px;
+	text-align:center;
+	margin-top:20px;
+	margin-left:25px;
+	font-size:14px;
+	color:white;
+	display:inline-block;
+}
+/************��Ϣչʾҳ��*************/
+.info_title{
+	width:100%;
+	height:60px;
+	border-bottom:1px solid rgb(238,238,238);
+	margin-top:30px;
+	background-color:white;
+	padding-top:20px;
+}
+.info_title .title_font{
+	font-size: 18px;
+	color:rgb(100,100,100);
+	margin-left:20px;
+	font-weight:bold;
+}
+.info_content{
+	width:100%;
+	min-height:500px;
+	background-color:white;
+	padding-top:20px;
+	margin-bottom:20px;
+}
+.info_content .content_style{
+	border-bottom: 1px solid rgb(238,238,238);
+	margin-left:50px;
+	margin-right:50px;
+}
+.info_content .content{
+	margin-left:50px;
+	margin-right:50px;
+	margin-top:10px;
+	font-size:14px;
+	color:rgb(102,102,102);
+	text-align:center;
+	padding-top:100px;
+}
