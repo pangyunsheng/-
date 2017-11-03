@@ -1,0 +1,374 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src="__JS_PATH__/jquery-1.8.3.js"></script>
+        <script src="__JS_PATH__/jquery.reveal.js"></script>
+        <script src="__JS_PATH__/jquery.cookie.js"></script>
+      <link rel="icon" href="/static/img/logo-50-50.jpg" type="image/x-icon" /> 
+        <!--[if lte IE 10]>
+        <script src="__JS_PATH__/requestanimationframe.js"></script>
+        <![endif]-->
+        <link rel=stylesheet href="__CSS_PATH__/reset.css">
+        <link rel=stylesheet href="__CSS_PATH__/common.css">
+        <link rel=stylesheet href="__CSS_PATH__/base.css">
+        <link rel=stylesheet href="__CSS_PATH__/account.css">
+        <link rel=stylesheet href="__CSS_PATH__/header.css">
+        <link rel=stylesheet href="__CSS_PATH__/reveal.css">
+        <link rel=stylesheet href="__CSS_PATH__/login.css">
+        <link rel=stylesheet href="__CSS_PATH__/menu02.css">
+        <link rel=stylesheet href="__CSS_PATH__/order.css">
+        <link rel=stylesheet href="__CSS_PATH__/footer_2.css">
+        <title>订饭组</title>
+
+         <style>
+
+       .favorite{
+        height: 300px;
+        padding:16px 14px;
+        /*min-height:200px;*/
+        margin:-40px 20px;
+        /*background: red;*/
+     }
+     .dp{
+        color: #333;
+        padding-left: 20px;
+     }
+        
+        .restaurant-item{
+            width:212px;
+            height:94px;
+            border:1px solid #EBEBEB;
+            padding:5px 7px 5px;
+            margin-right:28px;
+            margin-bottom:6px;
+            position:relative;
+            background:#ffffff;
+            cursor:pointer;
+        }
+        .restaurant-introduce dt,.restaurant-introduce p{
+            font-size:0.75em;
+            color:#565656;
+            padding-left: 20px;
+            padding-top: 20px;
+        }
+        .r-small-star .score{
+            z-index: 1313;
+            background: red;
+            background:url(/static/img/small_start.png) repeat-x left top;
+        }
+        .close-favorite{
+            width:17px;
+            height:17px;
+            color:white;
+            background:#C8C8C8;
+            position:absolute;
+            right:-18px;
+            text-align:center;
+            line-height:15px;
+            font-size:23px;
+            top:2px;
+        }
+        .restaurant-item:hover{
+            border:1px solid #febc19;
+            box-shadow:0 0 5px #febc19;
+        }
+        .restaurant-item:hover .close-favorite{
+            background:#F67816;
+        }
+
+    </style>
+
+    </head>
+    <body>
+        <!--header部分-->
+        <div class="header shadow">
+            <div class="search-result"> 
+            </div>
+            <div class="header-left fl">
+                <div class="icon fl"></div>
+                <a class="weixin-dingfan fw" href="#">微信订饭</a>
+                <a class="logo" href="/"></a>
+                <div class="search">
+                <img class="search-icon" src="__IMG_PATH__/icon_search.png" width="22" height="22">
+                <input id="search-input" class="search-input" type="text" placeholder="请输入楼名" onkeypress="onKeySearch()">
+                <span id="search-del" class="search-del">&times;</span> 
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="header-right fr">
+                <div class="login fl">
+
+                     <span class="header-operater">
+                    <a href="/index/Shop/shop_list">外卖</a>
+                    <a id="order" href="/index/OrderList/order">我的订单</a>
+                    <a href="/index/About/enter">商家入驻</a>
+                    <a id="houtai" href="/admin/login/login">后台管理</a> 
+                    </span> 
+                    <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
+                    登录
+                    </a>
+                    <a id="header-user"></a>
+                </div>
+
+                 <!-- 后台入口显示 -->
+                <script>
+                    var username = $.cookie('userId');
+                    if(!username)
+                    {
+                        $('#houtai').hide();
+                    }else{
+                        $.post(
+                            '/index/User/hou_tai',
+                            {username:username},
+                            function(data){
+                                $res = $.parseJSON(data);
+                                if($res.status == 'success'){
+                                  if($res.code == 0){
+                                    $('#houtai').show();
+                                 }else{
+                                    $('#houtai').hide();
+                                 }
+
+                                }else{
+                                    showAlert("服务器异常");
+                                }
+                                
+                            }
+                        );
+                    }
+                </script>
+                <!-- <div id="cart" class="cart fr"> 
+                    <img class="cart-icon" src="__IMG_PATH__/icon_cart_22_22.png">
+                </div> -->
+                <div id="user" class="user fr n">
+                    <img class="user-icon" src="__IMG_PATH__/icon_my.png"> 
+                </div> 
+            </div> 
+            
+           <ul id="subnav" class="subnav subnav-shadow n">
+                <li><a href="" target="" id="a6">最新订单</a></li>
+                <li><a href="" target="" id="a7">历史订单</a></li>
+                <li><a href="" target="" id="a8">我的积分</a></li>
+                <li><a href="" target="" id="a9">我的收藏</a></li>
+                <li><a href="" target="" id="a10">账户设置</a></li>
+                <li><a id="sub-logout" href="" target="">退出</a></li>
+            </ul>
+        </div>
+
+        <!--------------------------- 购物车展示 -------------------------------->
+            <div class="shop-cart shadow n">
+                <div class="shop-head">
+                    购物车<a class="shop-clear">[清空]</a>
+                </div>
+                <div class="shop-body">    
+                    
+
+                    <div class="isnull">
+                        <span></span>
+                        <b>购物车空空如也</b>
+                    </div>
+                </div>
+                <div class="shop-bottom">
+                    <div class="bottom-price fl">总计：￥<label>32</label>
+                    </div>
+                    <div class="bottom-icon"></div>
+                    <div class="bottom-pay fr">
+                        <a id="cart-pay">结算</a>
+                    </div>
+                </div>
+        </div>
+<!--------------------------- 购物车展示结束 -------------------------------->
+
+        <!--主体-->
+        <div class="content">
+            <!--左侧导航-->
+            <div class="content-left fl">
+                <div class="menu-left">
+                    <dl>
+                        <dt>个人中心</dt>
+                        <dd class="menu-item active">
+                            <span class="left-icon">
+                                <img src="__IMG_PATH__/icon_order.png" width="18px" height="18px">
+                            </span>
+                        <a href="" id="a1">最新订单</a>
+                        </dd>
+                        <dd class="menu-item">
+                            <span class="left-icon">
+                                <img src="__IMG_PATH__/icon_address.png" width="18px" height="18px">
+                            </span>
+                        <a href="" id="a2">历史订单</a>
+                        </dd> 
+                        <dd class="menu-item">
+                            <span class="left-icon">
+                                <img src="__IMG_PATH__/icon_score.png" width="18px" height="18px">
+                            </span>
+                        <a href="" id="a3">我的积分</a>
+                        </dd>
+                        <dd class="menu-item">
+                            <span class="left-icon">
+                                <img src="__IMG_PATH__/icon_balance.png" width="18px" height="18px">
+                            </span>
+                        <a href="" id="a4">店铺收藏</a>
+                        </dd>
+                        <dd class="menu-item ">
+                            <span class="left-icon">
+                                <img src="__IMG_PATH__/icon_settings.png" width="18px" height="18px">
+                            </span>
+                        <a href="" id="a5">账户设置</a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            
+            <!-- 赋值href -->
+            <script>
+                $username = $.cookie('userId');
+                $('#order').attr('href', '/index/OrderList/order/username/'+$username);
+
+                $('#a1').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a2').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a3').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a4').attr('href', '/index/User/collect/username/'+$username);
+                $('#a5').attr('href', '/index/Setting/setting/username/'+$username);
+
+                $('#a6').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a7').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a8').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a9').attr('href', '/index/User/collect/username/'+$username);
+                $('#a10').attr('href', '/index/Setting/setting/username/'+$username);
+            </script>
+
+
+            <!--右侧内容-->
+            <div class="content-right fl">
+                <div class="summary fl">
+                    <h3 class="summary-header">收藏的店铺</h3>
+                </div>
+
+            <!-- 收藏店铺 -->
+    <div>
+     <ul class="favorite clearfix transform-style">
+        
+        <!-- 收藏店铺遍历 -->
+        {foreach $res as $val}
+        <li class="restaurant-item fl trans" id="li{$val['shop_id']}">
+            <div class="img-box fl">
+                <a href="shop_detail.html"><img src="{$val['shop_pic']}" width="82px" height="82px"></a>
+            </div>
+
+            <article class="restaurant-introduce fl">
+                <h3 class="ellipsis"><a class="dp" href="/index/shop/shop_detail/shop_id/{$val['shop_id']}">{$val['shop_name']}</a></h3>
+                <dl class="clearfix">
+                    <dt class="fl">{$val['cate_name']}</dt>
+                    <dd class="r-small-star fl">
+                        <div class="r-small-star score" style="width:65.00px"></div>
+                    </dd>
+                </dl>
+                <div class="restaurant-state clearfix">
+                    <span><img src="" alt="" /></span>
+                
+                    <span><img src="" alt="" /></span>          
+                </div>
+            </article>
+
+            <a class="close-favorite" onclick="cancel_sc({$val['shop_id']})">&times;</a>
+        </li>
+        {/foreach}
+    
+        <!-- 遍历截止 -->
+            
+        </ul>
+
+    </div>
+
+
+     </div>
+
+            <div class="clear"></div>
+        </div>
+        <div class="footer-content">
+              <div class="footer-content-entrance">
+                <a class="footer-content-link" href="/index/About/enter">关于我们</a>
+                <span class="footer-content-separator">|</span>
+                <a class="footer-content-link footer-content-weixing">关注微信
+                <img class="weixin-pic" src="__IMG_PATH__/qr_code.jpg">
+                </a>
+                <span class="footer-content-separator">|</span> 
+                <a class="footer-content-link" href="/index/About/enter">投诉建议</a>
+                <span class="footer-content-separator">|</span>
+                <a class="footer-content-link kaidian_address" href="/index/About/enter">商家入驻</a>
+
+              </div>
+              <div class="footer-content-copyright">©2017 订饭组 <a target="_blank">粤ICP备17106509号-1</a> </div>
+        </div>
+
+        <!--提示框-->
+        <div id="alertModel" class="alertModel" >
+        <a id="alert" data-reveal-id="alertModel" data-animation="fade"></a>
+        <span id="alert-msg"></span>
+        <button id="btn-ok" class="btn">知道了</button>
+        <a id="btn-close" class="close-reveal-modal"><img src="__IMG_PATH__/icon_close.png" height="24" width="24"></a>
+        </div>
+
+        <script src="__JS_PATH__/common.js"></script>
+        <script src="__JS_PATH__/md5.js"></script>
+        <script src="__JS_PATH__/login.js"></script>   
+        <script src="__JS_PATH__/cart.lib.js"></script>
+        <script src="__JS_PATH__/cart.js"></script>
+        <script src="__JS_PATH__/header.js"></script>
+        <script src="__JS_PATH__/account.js"></script>
+        <script src="__JS_PATH__/footer.js"></script>
+
+        <script>
+            //点X号取消收藏
+        function cancel_sc($shop_id)
+        {
+            var $username = $.cookie('userId');
+            $.post(
+                '/index/ShopCollect/cancel_shoucang',
+                {shop_id:$shop_id, username:$username},
+                function(data){
+                    var $res = $.parseJSON(data);
+                    if($res.code == 0){
+                        $('#li'+$shop_id).hide();
+                    }else{
+                        showAlert('服务器异常');
+                    }
+                }
+            );
+        }
+
+        // 弹出框
+    function showAlert(msg,url){ 
+        $("#alert").trigger('click');
+        $("#alert-msg").html(msg);
+         
+         if(url){
+            $("#btn-ok,#btn-close").click(function(event) {
+                window.location.href=url;
+            });
+         }   
+    }
+
+        $(function(){ 
+
+        if($.cookie('userId'))
+        {
+            var userId=$.cookie('userId');
+            $('#header-user').html('hi，'+userId);
+            $('#header-user').show();
+            $('#header-login').hide(); 
+            $('#user').show();
+        }
+
+            $('#sub-logout').click(function(){
+            $.removeCookie('userId',{expires:7,path:'/'});//删除cookie 
+            location.href = '/';
+        });
+
+    });       
+    </script>
+
+    </body>
+</html>

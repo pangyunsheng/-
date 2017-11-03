@@ -43,16 +43,45 @@
             <div class="header-right fr">
                 <div class="login fl">
 
-                    <span class="header-operater">
-                    <a href="/">外卖</a>
-                    <a href="/account/order">我的订单</a>
-                    <a href="/about.html?p=lianxiwomen">联系我们</a> 
+                   <span class="header-operater">
+                    <a href="/index/Shop/shop_list">外卖</a>
+                    <a id="order" href="/index/OrderList/order">我的订单</a>
+                    <a href="/index/About/enter">商家入驻</a>
+                    <a id="houtai" href="/admin/login/login">后台管理</a> 
                     </span> 
-                     <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
+                    <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
                     登录
                     </a>
                     <a id="header-user"></a>
                 </div>
+
+                    <!-- 后台入口显示 -->
+                <script>
+                    var username = $.cookie('userId');
+                    if(!username)
+                    {
+                        $('#houtai').hide();
+                    }else{
+                        $.post(
+                            '/index/User/hou_tai',
+                            {username:username},
+                            function(data){
+                                $res = $.parseJSON(data);
+                                if($res.status == 'success'){
+                                  if($res.code == 0){
+                                    $('#houtai').show();
+                                 }else{
+                                    $('#houtai').hide();
+                                 }
+
+                                }else{
+                                    showAlert("服务器异常");
+                                }
+                                
+                            }
+                        );
+                    }
+                </script>
                 <!-- <div id="cart" class="cart fr"> 
                     <img class="cart-icon" src="__IMG_PATH__/icon_cart_22_22.png">
                 </div> -->
@@ -61,16 +90,27 @@
                 </div> 
             </div> 
             
-            <!-- 登录后的账号信息 -->
-        <ul id="subnav" class="subnav subnav-shadow n">
-                <li><a href="/index/User/setting" target="">账号设置</a></li>
-                <li><a href="/index/User/order" target="">我的订单</a></li>
-                <li><a href="/index/User/balance" target="">我的余额</a></li>
-                <li><a href="/index/User/score" target="">我的积分</a></li>
-                <li><a href="/index/User/address" target="">我的地址</a></li>
-                <li><a id="logout" href="" target="">退出</a></li>
-        </ul>
+           <!-- 登录后在 --头顶部icon_my.png头像--显示 -->
+            <ul id="subnav" class="subnav subnav-shadow n">
+                <li><a href="" target="" id="a6">最新订单</a></li>
+                <li><a href="" target="" id="a7">历史订单</a></li>
+                <li><a href="" target="" id="a8">我的积分</a></li>
+                <li><a href="" target="" id="a9">我的收藏</a></li>
+                <li><a href="" target="" id="a10">账户设置</a></li>
+                <li><a id="sub-logout" href="" target="">退出</a></li>
+            </ul>
         </div>
+
+        <!-- 赋值href -->
+            <script>
+                $username = $.cookie('userId');
+
+                $('#a6').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a7').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a8').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a9').attr('href', '/index/User/collect/username/'+$username);
+                $('#a10').attr('href', '/index/Setting/setting/username/'+$username);
+            </script>
 
         <div class="order-top-info">
         <span>首页&nbsp;&gt;&nbsp;<a class="info-place" onclick="JavaScript:history.go(-1);"></a>&nbsp;&gt;&nbsp;确认订单</span>
@@ -100,7 +140,8 @@
                 </span>
                 </div>
             </div> 
-
+            
+            <!-- 开始收货地址 -->
             <div class="checkout-content">
                 <div class="checkout-select">
                 <h2>收货地址</h2>
@@ -164,7 +205,7 @@
         <div class="footer-wrap">
             <div class="footer-content">
                   <div class="footer-content-entrance">
-                    <a class="footer-content-link">关于我们</a>
+                    <a class="footer-content-link" href="/index/About/enter">关于我们</a>
                     <span class="footer-content-separator">|</span>
                     <a class="footer-content-link" >关注微博</a>
                     <span class="footer-content-separator">|</span>
@@ -172,10 +213,10 @@
                     <img class="weixin-pic" src="images/qr_code.jpg">
                     </a>
                     <span class="footer-content-separator">|</span>
-                    <a class="footer-content-link kaidian_address" >商家入驻</a>
+                    <a class="footer-content-link kaidian_address" href="/index/About/enter">商家入驻</a>
 
                   </div>
-                  <div class="footer-content-copyright">©2016 dingfanzu.com <a target="_blank">京ICP证020666号</a> </div>
+                  <div class="footer-content-copyright">©2017 订饭组 <a target="_blank">粤ICP备17106509号-1</a> </div>
             </div>
         </div>
 
@@ -231,6 +272,19 @@
 
     <script>
         $(function(){
+             //如果未登录点击就点击我的订单，跳出登录页面
+            $('#order').click(function(event){
+                var $username = $.cookie('userId');
+                if(!$.cookie('userId'))
+                {
+                    //未登录跳出登录页面（自动绑定点击事件）
+                    $('#header-login').trigger('click');     
+                }else{
+                    location.href = '/index/OrderList/order/username/'+$username;
+                }
+                return false;
+            });
+
            // cookie用户信息
             if($.cookie('userId'))
             {

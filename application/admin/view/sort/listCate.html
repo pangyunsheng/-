@@ -1,0 +1,64 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+<link rel="stylesheet" href="__CSS_PATH__reset.css">
+<link rel="stylesheet" href="__CSS_PATH__bootstrap-admin.css">
+<link rel="stylesheet" href="__CSS_PATH__backstage.css">
+<style type="text/css">
+    td{
+        height: 40px;
+    }
+</style>
+</head>
+<body>
+<div class="details">
+                    <div class="details_operation clearfix">
+                        <div class="bui_select">
+                            <input type="button" value="添加分类" class="btn btn-primary"  onclick="addCate()">
+                        </div>
+                            
+                    </div>
+                    <!--表格-->
+                    <table class="table table-hover" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <th align="center"  width="30%">分类</th>
+                                <th align="center" width="30%">权重</th>
+                                <th align="center" >操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach $result as $val}
+                             <tr>
+                                <td align="center">{$val['cate_name']}</td>
+                                <td align="center">{$val['weight']}</td>
+                                <td align="center"><a class="btn btn-link" onclick="editCate({$val['all_cate_id']})">修改</a><a class="btn btn-link"  onclick="delCate({$val['all_cate_id']})">删除</a></td>
+                            </tr>
+                            {/foreach}
+                             <tr>
+                        </tbody>
+                    </table>
+                </div>
+<script type="text/javascript">
+
+    // 点击后跳转到修改分类页面
+	function editCate(id){
+		window.location="/admin/sort/editCate?id="+id;
+	}
+
+    // 删除分类
+	function delCate(id){
+		if(window.confirm("您确定要删除吗？删除之后不能恢复哦！！！")){
+			window.location="/admin/sort/delpro?id="+id;
+		}
+	}
+
+    // 点击后跳转到添加分类页面
+	function addCate(){
+		window.location="/admin/sort/addCate";
+	}
+</script>
+</body>
+</html>

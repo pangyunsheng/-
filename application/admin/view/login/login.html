@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>登陆</title>
+	<link  rel="stylesheet" href="__CSS_PATH__reset.css">
+	<link rel=stylesheet href="__CSS_PATH__bootstrap-admin.css"> 
+	<link rel="stylesheet" href="__CSS_PATH__backstage.css">
+	<link  rel="stylesheet" href="__CSS_PATH__main.css?v=1">
+	 <script src="__JS_PATH__jquery-1.8.3.js"></script>
+<style type="text/css">
+	span{
+		display:none;
+		color: red;
+	}
+
+</style>
+<!--[if IE 6]>
+<script type="text/javascript" src="../js/DD_belatedPNG_0.0.8a-min.js"></script>
+<script type="text/javascript" src="../js/ie6Fixpng.js"></script>
+<![endif]-->
+</head>
+
+<body>
+
+<div class="head">
+            <a href="/index/index/index"><div class="logo fl"></div></a>
+            <div class="head_text">后台管理系统</div>   
+</div>
+
+<div class="loginTip">
+
+</div>
+
+<div class="loginBox">
+	<div class="login_cont">
+			<ul class="login">
+				<li class="l_tit">管理员账号</li>
+
+				<span id="main-tip"></span>
+				
+				<li class="mb_10"><input type="text" id="username" name="username" placeholder="请输入用户名或手机号" class="form-control"></li>
+
+				
+				
+				<li class="l_tit">密码</li>
+				<span id="main-tip1"></span>
+				<li class="mb_10"><input type="password" id="password" name="password" class="form-control" placeholder="请输入密码"></li>
+				
+
+				<li class="l_tit">验证码</li>
+				<span id="main-tip2"></span>
+				<li class="mb_10"><input type="text" id="code" name="code" class="form-control password_icon"></li>
+				<img src="{:captcha_src()}" onclick="this.src=this.src+'?'+Math.random()">
+
+				<div style="height: 20px;"></div>
+				
+				<li><input type="submit" value="登录" id="commit" class="btn btn-primary login-btn"></li>
+				<li onclick="fan()"><<返回首页</li>
+			</ul> 
+
+	</div> 
+</div>
+
+<div class="footer">
+
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+  $('#commit').click(function (username,password,cade) {
+		 var username=$("#username").val();
+   		var password=$("#password").val();
+   		 var code=$("#code").val();
+   
+    if(username==""||username.length<=0){
+        $("#main-tip").html('请输入用户名或手机号');
+        $("#main-tip").css('display', 'inline-block');
+        return false;
+    } 
+     if(password==""||password.length<=0){
+     	$('#main-tip').css('display','none');
+        $("#main-tip1").html('请输入密码');
+        $("#main-tip1").css('display', 'inline-block');
+        return false;
+    } 
+      if(code==""||code.length<=0){
+      	$('#main-tip').css('display','none');
+      	$('#main-tip1').css('display','none');
+        $("#main-tip2").html('请输入验证码');
+        $("#main-tip2").css('display', 'inline-block');
+        return false;
+    } 
+		$.post("/admin/Login/admin",
+			{username:username,
+				password:password,
+				code:code},
+			function (data) {
+               var res= $.parseJSON(data);
+               // var name = json_decode(username);
+               if (res.status=="success") {
+
+	               	if(res.code=="0"){
+	               			$('#main-tip1').css('display','none');
+	               			$('#main-tip2').css('display','none');
+				   			 $('#main-tip').text('该用户不存在');
+				    		 $("#main-tip").css('display', 'inline-block');
+				            return;
+				   
+	                }else if(res.code=="1"){
+	                		$('#main-tip').css('display','none');
+	                		$('#main-tip2').css('display','none');
+	                		 $('#main-tip1').text('密码不正确');
+				     		$("#main-tip1").css('display', 'inline-block');
+				            return;  
+	                } else if(res.code=="2"){
+	                		$('#main-tip').css('display','none');
+	                		$('#main-tip1').css('display','none');
+	                		 $('#main-tip2').text('验证码不正确');
+				    		 $("#main-tip2").css('display', 'inline-block');
+				            return;
+	                } else if(res.code=='3'){
+	                	// 商家管理员跳转
+	                	window.location.href="/shopadmin/index/index/qwe/"+username;
+	                } else if(res.code=='4'){
+	                	// 平台管理员跳转
+	                	window.location.href="/admin/index/index/qwe/"+username;
+	                }
+
+               } else  {
+               		
+               		alert('服务器异常');
+ 
+                }
+
+          	console.log(data);
+		});
+               
+		
+	});
+
+
+  function fan()
+  {
+  	window.location="/index/index/index";
+  }
+
+</script>

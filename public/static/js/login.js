@@ -445,6 +445,7 @@ function logout(){
                 if($res.code=="0"){ //退出成功 
                       $.removeCookie('userId',{expires:7,path:'/'});//删除cookie 
 
+                      // location.href = '/';
                       location.reload();
                 } 
            }else{

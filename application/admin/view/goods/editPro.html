@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>-.-</title>
+<link rel=stylesheet href="__CSS_PATH__reset.css">
+<link rel=stylesheet href="__CSS_PATH__bootstrap-admin.css"> 
+<link rel=stylesheet href="__CSS_PATH__global.css"    />
+<link rel=stylesheet href="__CSS_PATH__backstage.css"   />
+</head>
+<body>
+<span class="main-title">商品列表 &gt; 编辑商品</span>
+<div class="form-add">
+<form action="/admin/goods/editpro" method="post" enctype="multipart/form-data">
+<table class="table  table-bordered table-hover">
+
+    <tr>
+        <td align="right" width="15%"><span class="td-txt">商品编号</span></td>
+        <td><input class="gray" type="text" disabled="true" readonly name="pSn" value=""/></td>
+    </tr>
+	<tr>
+		<td align="right"><span class="td-txt">商品名称</span></td>
+		<td><input type="text" name="pName"  value=""/></td>
+	</tr>
+    <tr>
+        <td align="right"><span class="td-txt">所属店铺</span></td>
+        <td>
+        <select name="shopId" class="">
+           
+                <option value="" >1</option>
+                <option value="" >2</option>
+                <option value="" >3</option>
+        </select>
+        </td>
+    </tr>
+	<tr>
+		<td align="right"><span class="td-txt">商品分类</span></td>
+		<td>
+		<select name="pCateId">
+				<option value="" >1</option>
+				<option value="" >2</option>
+				<option value="" >3</option>
+			
+		</select>
+		</td>
+	</tr> 
+	<tr>
+		<td align="right"><span class="td-txt">商品价格</span></td>
+		<td><input type="text" name="priceB"  value=""/></td>
+	</tr> 
+	<tr>
+        <td align="right"><span class="td-txt">商品图像</span></td>
+        <td> 
+            <img style="margin:12px;" src=""/>
+            <input class="btn btn-file" type="file" name="myFile"/>
+        </td>
+    </tr> 
+</table>
+<input class="btn btn-primary" type="submit"  value="编辑完成"/>
+</form>
+</div>
+</body>
+</html>

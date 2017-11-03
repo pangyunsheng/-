@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:76:"D:\wamp64\www\www.d.com\public/../application/index\view\shop\shop_list.html";i:1509168573;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:76:"D:\wamp64\www\www.d.com\public/../application/index\view\shop\shop_list.html";i:1509624196;}*/ ?>
 ﻿<!DOCTYPE html>
 <html>
     <head>
@@ -60,9 +60,10 @@
                 <div class="login fl">
 
                     <span class="header-operater">
-                    <a href="/">外卖</a>
-                    <a href="/index/User/order">我的订单</a>
-                    <a href="/about.html?p=lianxiwomen">联系我们</a> 
+                    <a href="/index/Shop/shop_list">外卖</a>
+                    <a id="order" href="/index/OrderList/order">我的订单</a>
+                    <a href="/index/About/enter">商家入驻</a>
+                    <a id="houtai" href="/admin/login/login">后台管理</a> 
                     </span> 
                     <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
                     登录
@@ -70,10 +71,38 @@
                     <a id="header-user" style="color: #333"></a>
                 </div>
 
+                 <!-- 后台入口显示 -->
+                <script>
+                    var username = $.cookie('userId');
+                    if(!username)
+                    {
+                        $('#houtai').hide();
+                    }else{
+                        $.post(
+                            '/index/User/hou_tai',
+                            {username:username},
+                            function(data){
+                                $res = $.parseJSON(data);
+                                if($res.status == 'success'){
+                                  if($res.code == 0){
+                                    $('#houtai').show();
+                                 }else{
+                                    $('#houtai').hide();
+                                 }
+
+                                }else{
+                                    showAlert("服务器异常");
+                                }
+                                
+                            }
+                        );
+                    }
+                </script>
+
                 <!-- 购物车 -->
-                <div id="cart" class="cart fr"> 
+                <!-- <div id="cart" class="cart fr"> 
                     <img class="cart-icon" src="__IMG_PATH__/icon_cart_22_22.png">
-                </div>
+                </div> -->
 
                 <!-- 用户头像 -->
                 <div id="user" class="user fr n">
@@ -106,15 +135,25 @@
 
             <!-- 登录后在 --头顶部icon_my.png头像--显示 -->
             <ul id="subnav" class="subnav subnav-shadow n">
-                <li><a href="/index/User/setting" target="">账号设置</a></li>
-                <li><a href="/index/User/order" target="">我的订单</a></li>
-                <li><a href="/index/User/balance" target="">我的余额</a></li>
-                <li><a href="/index/User/score" target="">我的积分</a></li>
-                <li><a href="/index/User/address" target="">我的地址</a></li>
+                <li><a href="" target="" id="a6">最新订单</a></li>
+                <li><a href="" target="" id="a7">历史订单</a></li>
+                <li><a href="" target="" id="a8">我的积分</a></li>
+                <li><a href="" target="" id="a9">我的收藏</a></li>
+                <li><a href="" target="" id="a10">账户设置</a></li>
                 <li><a id="sub-logout" href="" target="">退出</a></li>
             </ul>
-
         </div>
+
+        <!-- 赋值href -->
+            <script>
+                $username = $.cookie('userId');
+
+                $('#a6').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a7').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a8').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a9').attr('href', '/index/User/collect/username/'+$username);
+                $('#a10').attr('href', '/index/Setting/setting/username/'+$username);
+            </script>
 
         <!-- 登录部分 -->
     <div id="myModal" class="reveal-modal"> 
@@ -238,13 +277,6 @@
 		
 
 
-
-
-
-
-
-
-
 <!--------- 店铺分类 -------->
 
 		<div class="home_suppliertype_div" style="margin-top: 70px">
@@ -322,7 +354,7 @@
 			<font class="span">配送费：<font id="supplier_deliverflaot"><?php echo $val['shop_add_price']; ?>(元)</font>
             </font>
 			<font class="span">月销量：<font id="supplier_monthsale"><?php echo $val['shop_sell_sum']; ?></font></font><br />
-			<font class="span">距离：<font id="supplier_distace">3411米</font></font>
+			<font class="span">配送：<font id="supplier_distace">商家</font></font>
             <font class="span">起送价：<font id="supplier_distace"><?php echo $val['shop_dispatch_price']; ?></font></font>
 			</div>
 			</a>
@@ -377,8 +409,9 @@ function choosesupplier(supcateId){
         data : params,
         type: "POST",
         success : function(result){
-           var result = $.parseJSON(result);
 
+           var result = $.parseJSON(result);
+            console.log(result);
             // console.log(typeof(result.supcateId));return;
             if(result == ""){
                 $("#supplierlist").html('<a id="a" href="">没有您查询的商家，请选择其他</a>');
@@ -471,7 +504,7 @@ function suppliersort(sort){
 			<div class="content_div">
 				<textarea id="feedback_content" class="content" placeholder="请在此输入您要反馈的问题或建议"></textarea>
 			</div>
-			<div class="tel_title">联系方式</div>
+			 <a href="/index/About/enter">商家入驻</a>
 			<div class="tel_div">
 				<input id="feedback_tel" class="tel_input" placeholder="请输入您的手机号码"></input>
 			</div>
@@ -482,29 +515,29 @@ function suppliersort(sort){
 		</div>
 	</div>
 	<div style="height: 8em;"><link rel="stylesheet" href="__CSS_PATH__newwebsite.css" type="text/css"  />
+
 <div class="bottom_bar">
 	<div style="width: 980px;margin:0 auto;height:100px;z-index:3;">
 		<div class="bottom_logo">
-			<a href="/"><img src="__IMG_PATH__bottomlogo.png" border="0"/></a>
+			<a href="/"><img style="background: red;height: 50px" src="__IMG_PATH__header_logo.png" border="0"/></a>
 		</div>
 		<div  class="bottom_link">
-			<a href="http://www.dinsong.com/newhome/openInfoPage"><font class="bottom_link_font">联系我们</font></a><span>&nbsp;&nbsp;|&nbsp;</span> 
-			<a href="http://www.dinsong.com/newhome/openInfoPage"><font class="bottom_link_font">关于我们</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
-			<a href="http://www.dinsong.com/newhome/openInfoPage"><font class="bottom_link_font">店铺加入</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
-			<a href="http://www.dinsong.com/newhome/openInfoPage"><font class="bottom_link_font">微博微信</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
-			<a href="http://www.dinsong.com/newhome/openInfoPage"><font class="bottom_link_font">使用帮助</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
-			<a href="http://www.dinsong.com/newhome/openInfoPage"><font class="bottom_link_font">招聘</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
-			<a href="http://www.dinsong.com/newhome/openInfoPage"><font class="bottom_link_font">免责声明</font></a>			<div style="margin-left: -40px;margin-top:15px;">Copyright@2013 dinsong.com All Rights Reserved. 点送版权所有 闽ICP备13005486号-1</div>
+			<a href="/index/About/enter"><font class="bottom_link_font">联系我们</font></a><span>&nbsp;&nbsp;|&nbsp;</span> 
+			<a href="/index/About/enter"><font class="bottom_link_font">关于我们</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
+			<a href="/index/About/enter"><font class="bottom_link_font">店铺加入</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
+			<a href="/index/About/enter"><font class="bottom_link_font">微博微信</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
+			<a href="/index/About/enter"><font class="bottom_link_font">使用帮助</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
+			<a href="/index/About/enter"><font class="bottom_link_font">招聘</font></a><span>&nbsp;&nbsp;|&nbsp;</span>
+			<a href="/index/About/enter"><font class="bottom_link_font">免责声明</font></a>			<div style="margin-left: 40px;margin-top:15px;">Copyright@2017 订饭组 All Rights Reserved. 粤ICP备17106509号-1</div>
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
 var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fbb50099cc52f462559dec85de863358c' type='text/javascript'%3E%3C/script%3E"));
 </script>
 </div>
-
-
 
 
 <script src="__JS_PATH__/common.js"></script>
@@ -516,12 +549,23 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <script src="__JS_PATH__/header.js"></script>
 <script src="__JS_PATH__/footer.js"></script>
 
+
 <!-- 如果用户名存在且cookie没有过期 -->
     <script>
         $(function(){
-            console.log($.cookie());
 
-        	// console.log($.cookie('userId'));
+            //如果未登录点击就点击我的订单，跳出登录页面
+            $('#order').click(function(event){
+                var $username = $.cookie('userId');
+                if(!$.cookie('userId'))
+                {
+                    //未登录跳出登录页面（自动绑定点击事件）
+                    $('#header-login').trigger('click');     
+                }else{
+                    location.href = '/index/OrderList/order/username/'+$username;
+                }
+                return false;
+            });
 
             // cookie用户信息
             if($.cookie('userId'))

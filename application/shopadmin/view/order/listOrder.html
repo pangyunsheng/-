@@ -1,0 +1,118 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>-.-</title>
+<link rel="stylesheet" href="__CSS_PATH__reset.css">
+<link rel="stylesheet" href="__CSS_PATH__bootstrap-admin.css">
+<link rel="stylesheet" href="__CSS_PATH__backstage.css">
+<link rel=stylesheet href="__CSS_PATH__bootstrap-admin.css"> 
+<script src="__JS_PATH__jquery-1.8.3.js"></script> 
+<style type="text/css">
+    td{
+        text-align: center;
+        height: 40px;
+    }
+</style>
+</head>
+
+<body>
+<span class="main-title">订单列表</span>
+<div class="details">
+                    <div class="details_operation clearfix">
+
+                        <div class="fl">
+                        </div>
+                         
+                        <div class="fr"> 
+                            <div class="text">
+
+
+                                <span>
+                                <input type="text"  placeholder="搜索订单" class="search form-control" id="search" onkeypress="search()" >
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--表格-->
+                    <div id="order">
+                    <table class="table  table-hover">
+                        <thead>
+                            <tr>
+                                <th width="10%">订单编号</th>
+                                <th width="10%">电话</th>
+                                <th width="15%">备注信息</th>
+                                <th width="5%">订单金额</th>
+                                <th width="10%">评分</th>
+                                <th width="15%">订单时间</th>
+                                <th width="10%">操作</th>
+                            </tr>
+
+                            </thead>
+                            <tbody>
+
+                            {foreach $res as $val}
+                            <tr>
+                                <td>{$val['order_id']}</td>
+                                <td>{$val['order_phone']}</td>
+                                <td>{$val['order_liuyan']}</td>
+                                <td>{$val['total_price']}</td>
+                                <td>{$val['xing_count']}</td>
+                                <td>{$val['order_time']}</td>
+                                <td><a href="" onclick="delorder({$val['order_id']})">删除</a></td>
+                            </tr>
+                           {/foreach}
+
+                        </tbody>
+                    </table>
+                 {$page}
+                </div> 
+<script type="text/javascript">
+        
+
+        // 搜索订单
+    function search(){
+        if(event.keyCode==13){
+            var val=document.getElementById("search").value;
+            $.post('/shopadmin/order/search',
+            { value:val},
+            function(data){
+               
+               var timer = setTimeout(function(){
+                $('#order').empty();
+                $("#order").append(data);
+
+               },1000);
+
+            })
+                
+        }
+    }
+
+    // 删除订单
+    function delorder(id){
+        if(window.confirm("您确认要删除嘛？添加一次不易，且删且珍惜!")){
+
+      $.post(
+          'delorder',
+          { order_id:id},
+          function(data){
+             var data = $.parseJSON(data);
+                if (data.status=='success') {
+                     if (data.code=='0') {
+                         alert('删除成功');
+                    } 
+                    if (data.code=='1') {
+                        alert('删除失败');
+                    }
+                }
+           
+           
+          })
+        
+        }
+    }
+     
+</script>
+</body>
+</html>

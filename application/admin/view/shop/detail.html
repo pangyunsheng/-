@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>添加店铺</title>
+
+<link rel=stylesheet href="__CSS_PATH__reset.css">
+<link rel="stylesheet" href="__CSS_PATH__bootstrap-admin.css"> 
+<link href="__CSS_PATH__global.css"  rel="stylesheet"  type="text/css"/>
+<link href="__CSS_PATH__backstage.css"  rel="stylesheet"  type="text/css"/>
+<style type="text/css">
+    td{
+        height: 40px;
+    }
+</style>
+</head>
+<body> 
+<span class="main-title">店铺详情</span>
+<div id="main-tip"></div>
+<div class="form-add">
+<img width="50" height="50" src="{$res[0]['shop_pic']} ">
+<table class="table  table-bordered table-hover">
+    <tr>
+        <td align="right" width="20%"><span class="td-txt">店铺名称</span></td>
+        <td> {$res[0]['shop_name']} </td>
+    </tr>
+    <tr>
+        <td align="right"><span class="td-txt">店铺介绍</span></td>
+        <td> {$res[0]['shop_introduce']} </td>
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">店铺地址</span></td>
+        <td> {$res[0]['shop_addr']}  </td>     
+    </tr>
+     <tr>
+        <td align="right"><span class="td-txt">联系方式</span></td>
+        <td> {$res[0]['shop_tel']}  </td>     
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">经营范围</span></td>
+        <td> {$res[0]['cate_name']} </td>
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">营业时间</span></td>
+        <td> {$res[0]['shop_opentime']} </td>
+    </tr>
+     <tr>
+        <td align="right"><span class="td-txt">最低起送价</span></td>
+        <td> {$res[0]['shop_dispatch_price']} </td>
+    </tr>
+     <tr>
+        <td align="right"><span class="td-txt">配送费</span></td>
+        <td> {$res[0]['shop_add_price']} </td>
+    </tr><tr>
+        <td align="right"><span class="td-txt">餐盒费</span></td>
+        <td> {$res[0]['shop_box_price']} </td>
+    </tr>
+     <tr>
+        <td align="right"><span class="td-txt">月销量</span></td>
+        <td> {$res[0]['shop_sell_sum']} </td>
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">入驻时间</span></td>
+        <td> {$res[0]['create_time']} </td>
+    </tr> 
+     
+
+
+</table>
+
+
+ 
+</div>
+
+</body>  
+</html>

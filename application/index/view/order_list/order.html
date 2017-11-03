@@ -43,21 +43,50 @@
             </div>
             <div class="header-right fr">
                 <div class="login fl">
-
                     <span class="header-operater">
-                    <a href="/">外卖</a>
-                    <a href="/index/User/order">我的订单</a>
-                    <a href="/about.html?p=lianxiwomen">联系我们</a> 
+                    <a href="/index/Shop/shop_list">外卖</a>
+                    <a id="order" href="/index/OrderList/order">我的订单</a>
+                    <a href="/index/About/enter">商家入驻</a>
+                    <a id="houtai" href="/admin/login/login">后台管理</a> 
                     </span> 
-                    <a id="header-login" class="navBtn f-radius f-select n" data-reveal-id="myModal" data-animation="fade">
+                    <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
                     登录
                     </a>
+                    <a id="header-user"></a>
                 </div>
 
+                 <!-- 后台入口显示 -->
+                <script>
+                    var username = $.cookie('userId');
+                    if(!username)
+                    {
+                        $('#houtai').hide();
+                    }else{
+                        $.post(
+                            '/index/User/hou_tai',
+                            {username:username},
+                            function(data){
+                                $res = $.parseJSON(data);
+                                if($res.status == 'success'){
+                                  if($res.code == 0){
+                                    $('#houtai').show();
+                                 }else{
+                                    $('#houtai').hide();
+                                 }
+
+                                }else{
+                                    showAlert("服务器异常");
+                                }
+                                
+                            }
+                        );
+                    }
+                </script>
+
                 <!-- 购物车 -->
-                <div id="cart" class="cart fr"> 
+              <!--   <div id="cart" class="cart fr"> 
                     <img class="cart-icon" src="__IMG_PATH__/icon_cart_22_22.png">
-                </div>
+                </div> -->
                 
                 <!-- 用户头像 -->
                 <div id="user" class="user fr n">
@@ -66,11 +95,11 @@
             </div> 
             
             <ul id="subnav" class="subnav subnav-shadow n">
-                <li><a href="/index/User/setting" target="">账号设置</a></li>
-                <li><a href="/index/User/order" target="">我的订单</a></li>
-                <li><a href="/index/User/balance" target="">我的余额</a></li>
-                <li><a href="/index/User/score" target="">我的积分</a></li>
-                <li><a href="/index/User/address" target="">我的地址</a></li>
+                <li><a href="" target="" id="a6">最新订单</a></li>
+                <li><a href="" target="" id="a7">历史订单</a></li>
+                <li><a href="" target="" id="a8">我的积分</a></li>
+                <li><a href="" target="" id="a9">我的收藏</a></li>
+                <li><a href="" target="" id="a10">账户设置</a></li>
                 <li><a id="sub-logout" href="" target="">退出</a></li>
             </ul>
         </div>
@@ -110,42 +139,59 @@
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_order.png" width="18px" height="18px">
                             </span>
-                        <a href="/index/OrderList/order">我的订单</a>
+                        <a href="" id="a1">最新订单</a>
                         </dd>
                         <dd class="menu-item">
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_address.png" width="18px" height="18px">
                             </span>
-                        <a href="address">送餐地址</a>
+                        <a href="" id="a2">历史订单</a>
                         </dd> 
                         <dd class="menu-item">
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_score.png" width="18px" height="18px">
                             </span>
-                        <a href="score">我的积分</a>
+                        <a href="" id="a3">我的积分</a>
                         </dd>
                         <dd class="menu-item">
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_balance.png" width="18px" height="18px">
                             </span>
-                        <a href="balance">店铺收藏</a>
+                        <a href="" id="a4">店铺收藏</a>
                         </dd>
                         <dd class="menu-item ">
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_settings.png" width="18px" height="18px">
                             </span>
-                        <a href="setting">账户设置</a>
+                        <a href="" id="a5">账户设置</a>
                         </dd>
                     </dl>
                 </div>
             </div>
+            
+            <!-- 赋值href -->
+            <script>
+                $username = $.cookie('userId');
+
+                $('#order').attr('href', '/index/OrderList/order/username/'+$username);
+
+                $('#a1').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a2').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a3').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a4').attr('href', '/index/User/collect/username/'+$username);
+                $('#a5').attr('href', '/index/Setting/setting/username/'+$username);
+
+                $('#a6').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a7').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a8').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a9').attr('href', '/index/User/collect/username/'+$username);
+                $('#a10').attr('href', '/index/Setting/setting/username/'+$username);
+            </script>
 
             <!--右侧内容-->
             <div class="content-right fl">
                 <div class="summary fl">
-                    <a href="" style="color: #333;font-size: 18px;font-weight: 400px">最新订单</a>
-                    <span> &ensp;&ensp;|&ensp;&ensp; </span> 
-                    <a href="" style="color: red;font-size: 18px;font-weight: 400px">历史订单</a>
+                    <a style="color: #333;font-size: 18px;font-weight: 400px">最新订单</a>
                 </div>
                 
                 <!-- 隐藏域，直接赋值用户手机号 -->
@@ -163,7 +209,7 @@
                     <div class="order-content">
 
                     {foreach $res as $val}
-                    {if $val['username'] = $username}
+                    {if $val['order_cancel'] == 0}
                         <div class="order-meal">
                             <table>
                                 <thead>
@@ -172,7 +218,9 @@
                                             <a href=''  class="shop-name"></a>
                                             <p class="shop-info">
                                             <!-- <span class="phone-icon"></span> -->
-                                            商家电话：{$val['shop_tel']}
+                                            <span>店铺：{$val['shop_name']}</span>
+                                            <span style="float: right">商家电话：{$val['shop_tel']}</span>
+                                            </p>
                                         </th>
                                     </tr>
                                 </thead>
@@ -192,10 +240,15 @@
                             </table>
 
                             <div class="order-price">
+                                配送费：<span class="ft-red">￥{$jifen}</span>&ensp;&ensp;|&ensp;&ensp;
                                 积分抵现:
-                                <span class="ft-red">￥{$jifen}</span> &ensp;&ensp;|&ensp;&ensp;
-                                总价：<span class="ft-red">￥{$val['sf_price']}</span>
+                                <span class="ft-red">-￥{$jifen}</span>                                
+                                <div>
+                                实付：<span class="ft-red">￥{$val['sf_price']}</span>
+                                </div>
                             </div>
+
+                            
 
                             <div class="order-delivery">
                                 <div class="receive-info">
@@ -208,11 +261,11 @@
                                 </div>
                             </div>
                         </div>
-                    {/if}
-                    {/foreach}
-
+                  
                         <div class="order-info">
                             <div class="delivery-info">
+                                
+                                <!-- 第一步，提交订单完成 -->
                                 <div class="delivery-card ">
                                     <div class="card-header nick-selected">
                                         <div class="round">
@@ -224,42 +277,62 @@
                                         <div class="status-msg">
                                             订单提交成功
                                         </div>
-                                        <div class="prompt"> 订单号：
+                                        <div class="prompt"> 
+                                            订单号：{$val['order_id']}
                                         </div>
-                                        <div class="time">
-                                        
+                                        <div class="prompt">
+                                            下单时间：{$val['order_time']}
                                         </div>
                                     </div>
                                 </div>
+                                
+                    
+      <!-- 如果商家在后台接单了，显示下面的 -->
+
+                                {if $val['jiedan_status'] == 1}
+                                <!-- 第二步，商家接单 -->
                                 <div class="delivery-card ">
                                     <div class="card-header nick-selected">
-                                        <div class="round">
-                                        </div>
+                                        <div class="round"></div>
                                         <div class=line-through></div>
                                     </div>
                                     <div class="card-body ">
                                         <div class="status-msg">
-                                     
+                                            商家已接单
                                         </div>
                                         <div class="prompt"> 
-                                    
+                                            接单时间：{$val['jiedan_time']}
                                         </div>
                                         <div class="time">
                                       
                                         </div>
                                     </div>
                                 </div>
-                                <div>
+
+                                <!-- 第三步，催单，取消订单 -->
+                                <div class="delivery-card">
                                     <div class="card-header nick-selected">
-                                        <div class="round">
-                                        </div>
+                                        <div class="round"></div>
+                                        <div class=line-through></div>
                                     </div>
+
                                     <div class="card-body ">
                                         <div class="status-msg">
-                                        
                                         </div>
                                         <div class="prompt"> 
-                                       
+                                            <div class="order-operator " >
+                                             <div class="operator-btns">
+                                            
+                                               <a class=pay-btn onclick="orderCancel({$val['order_id']},{$val['username']})">取消订单</a>
+                                               <a class=pay-btn onclick="urgeOrder({$val['order_id']},{$val['username']})">催单</a>                                              
+                                            </div>
+
+                                            <!-- 如果订单完成显示这个，隐藏上面的 -->
+                                            <!-- <div>
+                                                 <a class=pay-btn>评价</a>
+                                                 <a href='' class=pay-btn>再买一次</a>
+                                            </div> -->
+                                            </div>
                                         </div>
                                         <div class="time">
                                            
@@ -267,53 +340,68 @@
                                     </div>
                                 </div> 
 
-
-                                <div class="order-operator " >
-                                    <div class="operator-btns">
-                                       <a class=pay-btn onclick="orderPay()">支付</a><a class=pay-btn onclick="orderCancel()">取消</a>
-                                            <a class=pay-btn onclick="orderCancel()">取消</a>
-                                        
-                                            <a class=pay-btn onclick="urgeOrder()">催单</a>
-                                            <a class=pay-btn>评价</a><a href='' class=pay-btn>再买一次</a>
-                                        
-    
+                                {elseif $val['jiedan_status'] == 2}
+                                <!-- 或者，商家拒绝单 -->
+                                <div class="delivery-card ">
+                                    <div class="card-header nick-selected">
+                                        <div class="round"></div>
+                                        <div class=line-through></div>
+                                    </div>
+                                    <div class="card-body ">
+                                        <div class="status-msg">
+                                            商家取消你的订单
+                                        </div>
+                                        <div class="prompt"> 
+                                            拒绝理由：{$val['jiedan_time']}
+                                        </div>
+                                        <div class="time">
+                                      
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- <div class="clear"></div> -->
+                            {/if}
+                        
+
                             </div>
                         </div>
                     </div>
-                   
+                    <!-- 没有新的订单 -->
+                        {else}
+                        <div class="tips" style="width: 600px;height: 200px;text-align: center;padding-top: 100px;border:1px solid red;color: red;font-size: 18px;">提示：当前没有新的订单
+                        </div>
+
+                    {/if}
+                    
+                    {/foreach}  
+           
          <!-- 分页  -->
                     <div class="page">
 
                     </div>
 
                 </div>
-
-
-
-            </div>
+        </div>
             <!-- 右侧内容结束 -->
             
             <div class="clear"></div>
         </div>
 
+
         <!-- 页脚部分 -->
        <div class="footer-content">
               <div class="footer-content-entrance">
-                <a class="footer-content-link" href="/about.html?p=guanyuwomen">关于我们</a>
+                <a class="footer-content-link" href="/index/About/enter">关于我们</a>
                 <span class="footer-content-separator">|</span>
                 <a class="footer-content-link footer-content-weixing">关注微信
                 <img class="weixin-pic" src="__IMG_PATH__/qr_code.jpg">
                 </a>
                 <span class="footer-content-separator">|</span> 
-                <a class="footer-content-link" href="/about.html?p=tousujianyi">投诉建议</a>
+                <a class="footer-content-link" href="/index/About/enter">投诉建议</a>
                 <span class="footer-content-separator">|</span>
-                <a class="footer-content-link kaidian_address" href="/about.html?p=shangjiaruzhu">商家入驻</a>
+                <a class="footer-content-link kaidian_address" href="/index/About/enter">商家入驻</a>
 
               </div>
-              <div class="footer-content-copyright">©2016 dingfanzu.com <a target="_blank">京ICP证020666号</a> </div>
+              <div class="footer-content-copyright">©2017 订饭组 <a target="_blank">粤ICP备17106509号-1</a> </div>
         </div>
 
         <!--提示框-->
@@ -329,13 +417,14 @@
         <script src="__JS_PATH__/login.js"></script>   
         <script src="__JS_PATH__/cart.lib.js"></script>
         <script src="__JS_PATH__/cart.js"></script>
-        <script src="__JS_PATH__/common.js"></script>
+        <script src="__JS_PATH__common.js"></script>
         <script src="__JS_PATH__/header.js"></script>
-        <script src="__JS_PATH__/account.js"></script>
+        <!-- <script src="__JS_PATH__/account.js"></script> -->
         <script src="__JS_PATH__/footer.js"></script>
 
          <!-- 如果用户名存在且cookie没有过期 -->
         <script>
+
             if($.cookie('userId'))
             {
                 var userId=$.cookie('userId');
@@ -343,11 +432,19 @@
                 $('#header-user').show();
                 $('#header-login').hide(); 
                 $('#user').show();
+            }else{
+                location.href = '/';
             }
         </script>
 
         <script>
         $(function(){
+            $('#sub-logout').click(function(){
+                $.removeCookie('userId',{expires:7,path:'/'});//删除cookie 
+                location.href = '/';
+            });
+            // showAlert("取消成功",'/index/OrderList/order/username/15767976872'); //弹出框，可以用
+            // return;
              //初始化购物车
                     // initCart();
 
@@ -380,58 +477,81 @@
 
         //取消订单
         function orderCancel(orderId,username){
-            var postUrl="/ajax/orderCancel.php";  
+            // var postUrl="/ajax/orderCancel.php";  
+            var postUrl = "/index/OrderList/orderCancel";
             $.post(postUrl,  
                 {
-                    orderId:orderId,
+                    order_id:orderId,
                     username:username
                 },
-                function(data,status,xhr) {    
-                   if(status=="success"){  
-                        $res= $.parseJSON(data); 
+                function(data) {
+                var $res= $.parseJSON(data);
+                var $username = $res.username;    
+                   if($res.status=="success"){  
+                          
                         if($res.code=="0"){ 
-                            showAlert("取消成功","/account/order"); 
+                            // 跳到历史订单
+                            showAlert("取消成功","/index/OrderHistory/scan_history/username/"+$username); 
                         }else if($res.code=="1"){
-                            showAlert($res.msg,"/account/order"); 
+                            showAlert('订单已送达，无法取消',"/index/OrderList/order/username/"+$username); 
                         }
                    }else{
-                        showAlert("服务器异常","/account/order");
+                        showAlert("服务器异常","/index/OrderList/order/username/"+$username);
                    }
                }); 
-        }
-        //支付订单。
-        function orderPay(orderId,orderTime){
-            var timestamp = Date.parse(new Date());
-            var nowTime=timestamp/1000;
-            var dis=nowTime-orderTime; 
-            if(dis>15*60){ 
-                showAlert("超过15分钟未支付，订单已取消","/account/order"); 
-            }else{
-                showAlert("去支付页");
-            }
         }
 
         //催单
         function urgeOrder(orderId,username){
-            var postUrl="/ajax/urgeOrder.php";  
+            // var postUrl="/ajax/urgeOrder.php";
+             var postUrl = "/index/OrderList/urgeOrder";
             $.post(postUrl,  
                 {
-                    orderId:orderId,
+                    order_id:orderId,
                     username:username
                 },
-                function(data,status,xhr) {    
-                   if(status=="success"){  
-                        $res= $.parseJSON(data); 
+                function(data) { 
+                var  $res= $.parseJSON(data);
+                var $username = $res.username;    
+                   if($res.status=="success"){  
                         if($res.code=="0"){ 
-                            showAlert("已通知商家"); 
+                            showAlert("已通知商家","/index/OrderList/order/username/"+$username); 
                         }else if($res.code=="1"){
-                            showAlert($res.msg);
+                            showAlert("催单成功","/index/OrderList/order/username/"+$username);
+                        }else if($res.code=='2'){
+                            showAlert("催单过于频繁","/index/OrderList/order/username/"+$username);
                         }
                    }else{
-                        showAlert("服务器异常");
+                        showAlert("服务器异常","/index/OrderList/order/username/"+$username);
                    }
                }); 
         }
+
+        //支付订单。
+        // function orderPay(orderId,orderTime){
+        //     var timestamp = Date.parse(new Date());
+        //     var nowTime=timestamp/1000;
+        //     var dis=nowTime-orderTime; 
+        //     if(dis>15*60){ 
+        //         showAlert("超过15分钟未支付，订单已取消","/account/order"); 
+        //     }else{
+        //         showAlert("去支付页");
+        //     }
+        // }
+
+        
+        // 弹出框
+        function showAlert(msg,url){ 
+        $("#alert").trigger('click');
+        $("#alert-msg").html(msg);
+         
+         if(url){
+            $("#btn-ok,#btn-close").click(function(event) {
+                window.location.href=url;
+            });
+         }
+        
+    }
         </script>
     </body>
 </html>

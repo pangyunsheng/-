@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+<link rel=stylesheet href="__CSS_PATH__reset.css">
+<link rel="stylesheet" href="__CSS_PATH__bootstrap-admin.css"> 
+<link href="__CSS_PATH__global.css"  rel="stylesheet"  type="text/css"/>
+<link href="__CSS_PATH__backstage.css"  rel="stylesheet"  type="text/css"/>
+</head>
+<body> 
+<span class="main-title">添加分类</span>
+<div id="main-tip"></div>
+<div class="form-add">
+
+
+       
+<form id="form1" action="/shopadmin/sort/addcate/" method="post">
+<table class="table  table-bordered table-hover">
+	<tr>
+		<td align="right" width="20%"><span class="td-txt">分类名称</span></td>
+		<td><input type="text" width="100%" id="cate_name" name="dishes_name" placeholder="请输入分类名称"/></td>
+	</tr>
+   
+</table>
+<input class="btn btn-primary" type="submit" value="添加分类"/>
+</form> 
+
+
+
+
+
+</div>
+<script type="text/javascript" src="__JS_PATH__jquery-1.8.3.js"></script>
+<script type="text/javascript">
+ $(document).ready(function(){ 
+   $("#form1").submit(function () {
+    if(isValid()){ 
+        return true;
+    }else{ 
+        return false;
+    }
+ });
+});  
+ function isValid(){ 
+    if($("#cate_name").val().length<=0){ 
+        $("#main-tip").html('分类名称不能为空');
+        $("#main-tip").css('display', 'inline-block');
+        return false;
+    }
+    $("#main-tip").hide();
+    return true;
+ }
+</script>
+</body>  
+</html>

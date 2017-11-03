@@ -49,7 +49,7 @@
                             <div style="color: #999999;width: 110px;text-align: center;margin: 0 auto">月售{$v['meal_sell_num']}份</div>
 
                             <span class="price"  item-price="{$v['meal_price']}">￥{$v['meal_price']}</span> 
-                            <img class="buy" src="__IMG_PATH__icon_buy.png" > 
+                            <img class="buy" src="__IMG_PATH__icon_buy.png"> 
                             
                             <ul class="stars" data-node="star">                   
                                 <li data-value="1" class="active"></li>
@@ -69,46 +69,16 @@
 
        </div>
 
-       <script>
+     <!--   <script>
             $(function(){
                 $('#cart-pay').click(function(event){
                     console.log($.cookie());
                     // return false;
 
-                    var item = $.cookie('cart'+{$res['shop_id']});//订单json数据格式信息
-                    var total_price = $(".bottom-price label")[0].innerText;//总价
-                    var shop_id = $.cookie('shopId');//店铺id
-                    var username = $.cookie('userId');//用户名，即手机号
-                    
-                    var params = {
-                        item:item,
-                        total_price:total_price,
-                        shop_id:shop_id,
-                        username:username
-                    };
-                    $.post(
-                            "/index/Order/order_info",
-                             params,
-                            function(data){
-                                console.log(data);
-                            }
-                        );
-
-
-
-
-                    
-                    // var itemId=parents(".menu-item").attr("item-id");
-                    // var a = $('.shop-item .item-name')[2].innerText; 
-                    // console.log(a);
-                    //总价
-                    
                    
-
-                 }); 
             });
           
-       </script>
+       </script> -->
 
 
        <!-- 评论区 -->
@@ -118,7 +88,7 @@
        		<section class="main-box">
 			    <section class="review-messages">
                 <header class="review-header-box clearfix">
-                       全部评论（共177条评论）
+                       全部评论（共&ensp;{$count}&ensp;条评论）
                     <!-- <label class="checkbox view-check fr" title="有内容的评论" model="filterObj">
                         <div class="checker"><span ng-class="{checked:model}">
                             <input type="checkbox" ng-model="model" ng-true-value="true" ng-disabled="disable" class="ng-pristine ng-valid">
@@ -128,127 +98,44 @@
                     </label> -->
                 </header>
                 
-                    
+                        {foreach $list as $key=>$val}
                         <article class="review-item">
+                                    
                                 <div class="fr review-search order-detail">
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a> |
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a> |
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a>
-                                </div>
-                                <span>183****7031</span>
-                                <span>2015-05-01 15:09:14</span>
+                                    {foreach $it as $k=>$v}
+                                    {if $key == $k}
+                                    {foreach $v as $x=>$y}
+                                    <!-- 只出两件商品 -->
+                                    {if $x == 0 || $x == 1}
+                                    <a class="review-read-color review-order">{$y['name']}</a> |  
+                                    {/if}
+                                    {/foreach}
+                                    {/if}
+                                    {/foreach}
 
-                                <span>送餐时长：44分钟</span>
+                                    等{$it_count[$key]} 件商品
+                                    
+                                </div>
+
+                                <span>{$val['username']}</span>
+                                <span>{$val['pj_time']}</span>
+
+                                <span>送餐时长：{$time[$key]}分钟</span>
 
 						<!-- 小星星随着宽度变小黄色部分变少 -->
                                 <span class="small-star">
-                                    <span style="width:65.00px;"></span>     
+                                    <span style="width:{$val['xing_count']*13}.00px;"></span>     
                                 </span>
 
                             <div class="review-content">
-                                你TM的
+                                {$val['content']}
                             </div>  
 
                         </article>
 
-
-                        <article class="review-item">
-                                <div class="fr review-search order-detail">
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a> |
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a> |
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a>
-                                </div>
-                                <span>183****7031</span>
-                                <span>2015-05-01 15:09:14</span>
-
-                                <span>送餐时长：44分钟</span>
-
-						<!-- 小星星随着宽度变小黄色部分变少 -->
-                                <span class="small-star">
-                                    <span style="width:65.00px;"></span>     
-                                </span>
-
-                            <div class="review-content">
-                                你TM的
-                            </div>  
-
-                        </article>
+                        {/foreach}
 
 
-                        <article class="review-item">
-                                <div class="fr review-search order-detail">
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a> |
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a> |
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a>
-                                </div>
-                                <span>183****7031</span>
-                                <span>2015-05-01 15:09:14</span>
-
-                                <span>送餐时长：44分钟</span>
-
-						<!-- 小星星随着宽度变小黄色部分变少 -->
-                                <span class="small-star">
-                                    <span style="width:65.00px;"></span>     
-                                </span>
-
-                            <div class="review-content">
-                                你TM的
-                            </div>  
-
-                        </article>
-
-
-                        <article class="review-item">
-                                <div class="fr review-search order-detail">
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a> |
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a> |
-                                    <a class="review-read-color review-order">爆炒鱿鱼</a>
-                                </div>
-                                <span>183****7031</span>
-                                <span>2015-05-01 15:09:14</span>
-
-                                <span>送餐时长：44分钟</span>
-
-						<!-- 小星星随着宽度变小黄色部分变少 -->
-                                <span class="small-star">
-                                    <span style="width:65.00px;"></span>     
-                                </span>
-
-                            <div class="review-content">
-                                你TM的
-                            </div>  
-
-                        </article>
-					
-
-                        <article class="review-item">
-                                <div class="fr review-search order-detail">
-                                    <a href="javascript:" class="review-read-color review-order" detailKey="dbqlxS8-eRedBg0sUB6zZDcgNJwAKrHZKmERaWPzxe7bbQZR8czsfrP2Z1PfZAGz">看他点了什么 ></a>
-                                    <div class="order-menu-info">
-                                        <div class="order-menu-inner">
-                                            <div class="order-loding" ng-hide="loadStatus['dbqlxS8-eRedBg0sUB6zZDcgNJwAKrHZKmERaWPzxe7bbQZR8czsfrP2Z1PfZAGz']">
-                                                <img src="images/o_loading.gif" alt="">
-                                            </div>
-                                            <div class="order-loding" ng-show="loadError['dbqlxS8-eRedBg0sUB6zZDcgNJwAKrHZKmERaWPzxe7bbQZR8czsfrP2Z1PfZAGz']" ng-bind="errorText"></div>
-                                            <div class="order-menu-body">  
-                                                <div class="order-detail-item" ng-class="{last:$last}" ng-repeat="menu_itemmenu_item in menuItenmenus['dbqlxS8-eRedBg0sUB6zZDcgNJwAKrHZKmERaWPzxe7bbQZR8czsfrP2Z1PfZAGz'] track by $index">
-                                                    <div class="goods-name ellipsis" ng-bind="menu_itemmenu_item"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="menu-close">×</div>
-                                    </div>
-                                </div>
-                                <span>136****1674</span>
-                                <span>2015-05-01 12:23:16</span>
-                                <span class="small-star">
-                                    <span style="width:65.00px;"></span>
-                                </span>
-                            <div class="review-content"></div>
-                            
-                            
-                        </article>
-                    
                     <page total="18" show="5"></page>               
             </section>
 			</section>  		
@@ -272,16 +159,46 @@
             <div class="header-right fr">
                 <div class="login fl">
 
-                    <span class="header-operater">
-                    <a href="/">外卖</a>
-                    <a href="/index/User/order">我的订单</a>
-                    <a href="/about.html?p=lianxiwomen">联系我们</a> 
+                   <span class="header-operater">
+                    <a href="/index/Shop/shop_list">外卖</a>
+                    <a id="order" href="/index/OrderList/order">我的订单</a>
+                    <a href="/index/About/enter">商家入驻</a>
+                    <a id="houtai" href="/admin/login/login">后台管理</a> 
                     </span> 
                     <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
                     登录
                     </a>
                     <a id="header-user"></a>
                 </div>
+
+                
+                 <!-- 后台入口显示 -->
+                <script>
+                    var username = $.cookie('userId');
+                    if(!username)
+                    {
+                        $('#houtai').hide();
+                    }else{
+                        $.post(
+                            '/index/User/hou_tai',
+                            {username:username},
+                            function(data){
+                                $res = $.parseJSON(data);
+                                if($res.status == 'success'){
+                                  if($res.code == 0){
+                                    $('#houtai').show();
+                                 }else{
+                                    $('#houtai').hide();
+                                 }
+
+                                }else{
+                                    showAlert("服务器异常");
+                                }
+                                
+                            }
+                        );
+                    }
+                </script>
 
                 <!-- 购物车 -->
                <!--  <div id="cart" class="cart fr"> 
@@ -302,12 +219,12 @@
 			<!-- 公告部分 -->
             <div class="gonggao-wrap">
              <div class="gonggao">     
-                <b> 平均送达时间：<strong>{$res['shop_get_time']}分钟</strong></b> &ensp;|&ensp;
+                <b> 平均送达时间：<strong>{$get_time}&ensp;分钟</strong></b> &ensp;|&ensp;
                 <b> 起送价：¥<strong>{$res['shop_dispatch_price']}</strong></b> &ensp;|&ensp;&ensp;
                 <b> 配送费：¥<strong>{$res['shop_add_price']}</strong></b> &ensp;|&ensp;
 
 				<!-- 评论区 -->
-				<b><a href="" style="color: red;font-size: 18px;text-decoration: underline" id="commit">评论区</a></b>
+				<b style="border: 1px dotted red;border-top: none"><a href="" style="color: red;font-size: 18px;text-decoration: underline" id="commit">评论区</a></b>
 				
                 <b style="float: right;">
                 	店铺地址：<strong>{$res['shop_addr']}</strong>
@@ -341,13 +258,40 @@
                         <b>营业时间：{$res['shop_opentime']}</b><br>
                     
                         {if $res['shop_state'] == 1}
-                      <strong style="background-color: #64b93c;color: white">营业中</strong>
+                      <strong style="background-color: #64b93c;color: white;">营业中</strong> 
 
                         {else}
                         <!-- 或者已关门 -->
-                         <strong style="background-color: #333;color: white">已闭店</strong>
-
+                         <strong style="background-color: #333;color: white">已闭店</strong> 
+            
                          {/if}
+                        
+                        <!-- 如果关店了就隐藏购买图标 -->
+                         <script>
+                            $(function(){
+                                console.log({$res['shop_state']});
+                                 if({$res['shop_state']} == 0)
+                                {
+                                    $('.buy').hide();
+                                }
+                          
+                            });
+                                                      
+                         </script>
+
+                         <!-- 店铺收藏 -->
+                        &ensp;&ensp;|&ensp;&ensp; 
+            
+                        <a id="sc_1">
+                        <img src="__IMG_PATH__icon_full_star.png" style="width: 20px;height: 16px;display: inline-block;margin-top: 5px">
+                        <label>收藏</label>
+                       </a>
+
+                       <a id="sc_2">
+                        <img src="__IMG_PATH__icon_star_red.png" style="width: 20px;height: 16px;display: inline-block;margin-top: 5px">
+                        <label>已收藏</label>
+                      </a>
+                        
                         </span>
                         </dt>
                         
@@ -394,14 +338,37 @@
 <!------------------- 结算结算结算结算结算结算结算结算v结算 ---------------------------->
 
            <script>
-
+                
                 $('#cart-pay').click(function(event) {
                     // return false;
                     var userId=$.cookie('userId');
+                    var shop_id = $.cookie('shopId');//店铺id
+                    // var item = $.cookie('cart'+shop_id);//订单json数据格式信息
+                   
                     if(userId){ //已登录
                         // 把shop_id带过去
-                        location.href="{:url('/index/Order/order_confirm', ['shop_id'=>$res['shop_id']])}";
+                     // console.log($.cookie('cart'+shop_id));
+                    var item = $.cookie('cart'+shop_id);//订单json数据格式信息
+                    var total_price = $(".bottom-price label")[0].innerText;//总价         
+                    var username = $.cookie('userId');//用户名，即手机号
+                    // console.log(item);return;
+                    
+                    var params = {
+                        item:item,
+                        total_price:total_price,
+                        shop_id:shop_id,
+                        username:username
+                    };
+                    $.post(
+                            "/index/Order/order_info",
+                             params,
+                            function(data){
+                                 location.href="{:url('/index/Order/order_confirm', ['shop_id'=>$res['shop_id']])}";
+                            }
+                        );
+
                     }else{ 
+                        $.removeCookie('cart'+shop_id,{expires:7,path:'/'});//删除未登录之前的
                         //未登录跳出登录页面（自动绑定点击事件）
                         $('#header-login').trigger('click');
                     }
@@ -409,16 +376,28 @@
            </script>
 <!------------------- 结算结算结算结算结算结算结算结算v结算 ---------------------------->
         
-        <!-- 登录后的账号信息 -->
-        <ul id="subnav" class="subnav subnav-shadow n">
-                <li><a href="/index/User/setting" target="">账号设置</a></li>
-                <li><a href="/index/User/order" target="">我的订单</a></li>
-                <li><a href="/index/User/balance" target="">我的余额</a></li>
-                <li><a href="/index/User/score" target="">我的积分</a></li>
-                <li><a href="/index/User/address" target="">我的地址</a></li>
+         <!-- 登录后在 --头顶部icon_my.png头像--显示 -->
+            <ul id="subnav" class="subnav subnav-shadow n">
+                <li><a href="" target="" id="a6">最新订单</a></li>
+                <li><a href="" target="" id="a7">历史订单</a></li>
+                <li><a href="" target="" id="a8">我的积分</a></li>
+                <li><a href="" target="" id="a9">我的收藏</a></li>
+                <li><a href="" target="" id="a10">账户设置</a></li>
                 <li><a id="sub-logout" href="" target="">退出</a></li>
-        </ul>
-    </div>
+            </ul>
+        </div>
+
+        <!-- 赋值href -->
+            <script>
+                $username = $.cookie('userId');
+
+                $('#a6').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a7').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a8').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a9').attr('href', '/index/User/collect/username/'+$username);
+                $('#a10').attr('href', '/index/Setting/setting/username/'+$username);
+            </script>
+
 
 	<!-- 登录部分 -->
     <div id="myModal" class="reveal-modal"> 
@@ -537,7 +516,13 @@
     </div>
 	<!-- 登录部分结束 -->
 
-
+     <!--提示框-->
+        <div id="alertModel" class="alertModel" >
+        <a id="alert" data-reveal-id="alertModel" data-animation="fade"></a>
+        <span id="alert-msg"></span>
+        <button id="btn-ok" class="btn">知道了</button>
+        <a id="btn-close" class="close-reveal-modal"><img src="__IMG_PATH__/icon_close.png" height="24" width="24"></a>
+        </div>
 
 
     <script src="__JS_PATH__md5.js"></script>
@@ -552,7 +537,8 @@
     <script>
  //---===================初始化购物车-====================================//
 
-        $(function(){       
+        $(function(){ 
+
 
         cartStart();
 
@@ -560,19 +546,6 @@
 
         var shop_id=$.cookie('shopId');
         var username = $.cookie('userId');
-        // console.log($.cookie());
-        // if(shopId){  
-        //     var arrObj=selectAll(shopId);
-        //     if(arrObj){
-
-        //     for(var i=0;i<1;i++){
-
-        //             var itemId=arrObj[i].itemId;
-        //             var name=hexToString(arrObj[i].name);
-        //             var count=arrObj[i].count;
-        //             var price=arrObj[i].price;
-
-        //             var price2=price*count;//单价*个数
 
         $.post(
             '/index/Order/init_info',
@@ -641,10 +614,127 @@
  //---===================初始化购物车-====================================//
     </script>
 
+<!-- 收藏区 -->
+     <script>
+    $(function(){
+        var userId = $.cookie('userId');
+        if(!userId){
+            $('#sc_1').show();
+            $('#sc_2').hide();
+        }
+
+    // 初始化收藏
+    init_sc();
+    function init_sc()
+    {
+        var $username = $.cookie('userId');
+
+        var $shop_id = $.cookie('shopId');
+        $postUrl = '/index/ShopCollect/select_sc';
+        $.post(
+            $postUrl,
+            {username:$username, shop_id:$shop_id},
+            function(data){
+                
+                $res = $.parseJSON(data);
+                if($res.code == 0)
+                {
+                    $('#sc_2').show();
+                    $('#sc_1').hide();
+                }else{
+                     $('#sc_2').hide();
+                     $('#sc_1').show();
+                }
+            }
+        );
+    }
+
+    // 收藏
+    $('#sc_1').click(function(){
+        var $shop_id = $.cookie('shopId');
+        var $username = $.cookie('userId');
+        if(!$username){
+             //未登录跳出登录页面（自动绑定点击事件）
+             $('#header-login').trigger('click');
+             return;
+        }
+
+        $postUrl = '/index/ShopCollect/shoucang';
+        $.post(
+            $postUrl,
+            {shop_id:$shop_id, username:$username},
+            function(data){
+                $res = $.parseJSON(data);
+                if($res.code == 0){
+                    showAlert("收藏成功");
+                    $('#sc_1').hide();
+                    $('#sc_2').show();
+                }else{
+                    showAlert('服务器出错')
+                }
+            }
+        );
+    });
+
+    //取消收藏
+    $('#sc_2').click(function(){
+        var $shop_id = $.cookie('shopId');
+        var $username = $.cookie('userId');
+
+         if(!$username){
+             //未登录跳出登录页面（自动绑定点击事件）
+             $('#header-login').trigger('click');
+             return;
+        }
+
+        $postUrl = '/index/ShopCollect/cancel_shoucang';
+        $.post(
+            $postUrl,
+            {shop_id:$shop_id, username:$username},
+            function(data){
+                $res = $.parseJSON(data);
+                if($res.code == 0){
+                    
+                    $('#sc_1').show();
+                    $('#sc_2').hide();
+                    showAlert("取消收藏成功");
+                }else{
+                    showAlert('服务器出错')
+                }
+            }
+        );
+    });
+
+function showAlert(msg,url){ 
+    $("#alert").trigger('click');
+    $("#alert-msg").html(msg);
+     
+     if(url){
+        $("#btn-ok,#btn-close").click(function(event) {
+            window.location.href=url;
+        });
+     }                        
+}
+});
+</script>
+
 
  
 <!-- 评论区 -->
     <script>
+         //如果未登录点击就点击我的订单，跳出登录页面
+            $('#order').click(function(event){
+                var $username = $.cookie('userId');
+                if(!$.cookie('userId'))
+                {
+                    //未登录跳出登录页面（自动绑定点击事件）
+                    $('#header-login').trigger('click');     
+                }else{
+                    location.href = '/index/OrderList/order/username/'+$username;
+                }
+                return false;
+            });
+
          // cookie用户信息
         if($.cookie('userId'))
         {
@@ -894,3 +984,4 @@
 
 </body>
 </html>
+

@@ -1,0 +1,35 @@
+   <div id="cha">
+                    <table class="table  table-hover">
+                        <thead>
+                            <tr>
+                                <th width="10%">订单编号</th>
+                                <th width="15%">所属店铺</th> 
+                                <th width="10%">电话</th>
+                                <th width="15%">备注信息</th>
+                                <th width="5%">订单金额</th>
+                                <th width="10%">评分</th>
+                                <th width="15%">订单时间</th>
+                                <th width="10%">操作</th>
+                            </tr>
+                            </thead>
+
+
+                            <tbody>
+                            {php} $i=1;{/php}
+                            {foreach $res as $val}
+                            <tr>
+                                <td>{php} echo 'DFZ00'.$i++;{/php}</td>
+                                <td>{$val['shop_name']}</td>
+                                <td>{$val['order_phone']}</td>
+                                <td>{$val['order_liuyan']}</td>
+                                <td>{$val['sf_price']}</td>
+                                <td>{$val['xing_count']}</td>
+                                <td>{$val['order_time']}</td>
+                                <td><a href="" onclick="del({$val['order_id']})">删除</a></td>
+                            </tr>
+                            {/foreach}
+                        <br /> 
+                        </tbody>
+                    </table>
+                     {$page}  
+                </div> 

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>营业状态</title>
+<script src="__JS_PATH__jquery-1.8.3.js"></script> 
+<script src="__JS_PATH__/jquery.cookie.js"></script>
+
+<link rel=stylesheet href="__CSS_PATH__reset.css">
+<link rel="stylesheet" href="__CSS_PATH__bootstrap-admin.css"> 
+<link href="__CSS_PATH__global.css"  rel="stylesheet"  type="text/css"/>
+<link href="__CSS_PATH__backstage.css"  rel="stylesheet"  type="text/css"/>
+
+
+<style type="text/css">
+    td{
+        height: 40px;
+    }
+    img{
+        width: 100px;
+        height: 100px;
+    }
+</style>
+</head>
+<body> 
+<span class="main-title">营业状态</span>
+<div id="main-tip"></div>
+<div class="form-add">
+<!-- <form action="/shopadmin/info/infor" method="post"> -->
+<form>
+<table class="table  table-bordered table-hover">
+
+       <tr style="height: 100px;">
+        <td align="right" width="20%" style="font-size: 14px">当前店铺 &ensp;</td>
+        
+        <td > 
+        	{if $state == 1}
+			<div style="background: green;color: white;width: 58px;height: 40px;margin-left: 100px;line-height: 40px;text-align: center;font-size: 16px;">
+			营业中
+		    </div>
+			
+			{elseif $state == 0}
+			<div style="background: grey;color: white;width: 58px;height: 40px;margin-left: 100px;line-height: 40px;text-align: center;font-size: 16px;">
+			已闭店
+		    </div>
+		    {/if}
+        </td>
+
+    </tr>
+    <tr>
+        <td align="right" width="20%" style="font-size: 14px"><span class="td-txt">改变状态</span></td>
+        <td> 
+        	<div style="margin-left: 100px;">
+        	<span style="padding-top: 5px;"><input checked type="radio" name="state" style="height: 10px" value="1"><b style="padding-left: 15px">开店</b></span>
+        	<span style="padding-left: 100px"><input type="radio" name="state" style="height: 10px" value="0"><b style="padding-left: 15px">闭店</b></span>
+        	</div>
+        </td>
+    </tr>
+  
+
+</table>
+<input class="btn btn-primary" type="submit" id="open" value="确认状态"/>
+</form>
+</div>
+ <!--提示框-->
+<div id="alertModel" class="alertModel" style="display: none">
+<a id="alert" data-reveal-id="alertModel" data-animation="fade"></a>
+<span id="alert-msg"></span>
+<button id="btn-ok" class="btn">知道了</button>
+<a id="btn-close" class="close-reveal-modal"><img src="__IMG_PATH__/icon_close.png" height="24" width="24"></a>
+</div>
+
+</body>  
+</html>
+
+<script>
+
+   
+$(function() {
+
+  $('#open').click(function() {
+  	var $shop_state = $('input[name=state]:checked').val();
+   	
+    $.post('/shopadmin/info/upd_shopState',
+            {shop_state:$shop_state},
+            function(data){     
+               var res = $.parseJSON(data);
+                       if (res.status=='success') {
+                         if (res.code=='0') {
+                         	location.href = '/shopadmin/info/shopState';        
+                        }
+                        if (res.code=='1') {
+                        alert('修改失败');
+                            return;
+                        }
+                    } 
+                
+            }
+        );
+    return false;
+  });
+
+  // 弹出框
+function showAlert(msg,url){ 
+$("#alert").trigger('click');
+$("#alert-msg").html(msg);
+ 
+ if(url){
+    $("#btn-ok,#btn-close").click(function(event) {
+        window.location.href=url;
+    });
+ }
+    
+ }
+
+
+});
+
+
+</script>

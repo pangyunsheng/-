@@ -5,14 +5,17 @@ use think\Request;
 use app\index\model\User as UserModel;
 use lib\Verify;
 use think\Session;
+use app\index\model\Dishes;
 
 class Index extends Controller
 {
 	protected $user;
+	protected $dishes;
 
 	protected function _initialize()
 	{
 		$this->user = new UserModel();
+		$this->dishes = new Dishes();
 	}
 	//首页
 	public function index()
@@ -130,5 +133,14 @@ class Index extends Controller
 				return json_encode(['code'=>'2', 'status'=>'success']);
 			}
 		}
+	}
+
+	//模糊查询店名或菜名
+	public function mohu_search()
+	{
+		// $meal_name = '鸡';
+		$meal_name = input('param.meal_name');
+		$res = $this->dishes->keyword($meal_name);
+		return $res;
 	}
 }

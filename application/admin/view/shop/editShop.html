@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>添加店铺</title>
+
+<link rel=stylesheet href="__CSS_PATH__reset.css">
+<link rel="stylesheet" href="__CSS_PATH__bootstrap-admin.css"> 
+<link href="__CSS_PATH__global.css"  rel="stylesheet"  type="text/css"/>
+<link href="__CSS_PATH__backstage.css"  rel="stylesheet"  type="text/css"/>
+</head>
+<body> 
+<span class="main-title">店铺列表 &gt; 编辑店铺</span>
+<div id="main-tip"></div>
+<div class="form-add">
+<form id="form1" action="editshop" method="post" enctype="multipart/form-data">
+<table class="table  table-bordered table-hover">
+
+
+
+    {foreach $res1 as $val}
+    <tr>
+        <td align="right" width="20%"><span class="td-txt">店铺名称</span></td>
+        <td><input type="text" width="100%" id="shopName" name="shopName" value="{$val['shop_name']}" /></td>
+    </tr>
+    <tr>
+        <td align="right"><span class="td-txt">经营范围</span></td>
+        <td><input type="text" name="shopTip" value="" /></td>
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">配送方式</span></td>
+        <td>
+           <input type="text" name="shopTip" value="" />
+        </td>
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">店铺地址</span></td>
+        <td><input type="text" name="address" value="{$val['shop_introduce']}" /></td>
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">联系方式</span></td>
+        <td><input type="text" name="shopFloor" value="{$val['shop_addr']}" /></td>
+    </tr>  
+{/foreach}
+</table>
+<input class="btn btn-primary" type="submit" value="保存修改"/>
+</form> 
+</div>
+
+<script type="text/javascript" src="__JS_PATH__jquery-1.8.3.js"></script>
+<script type="text/javascript">
+ $(document).ready(function(){ 
+   $("#form1").submit(function () {
+    if(isValid()){ 
+        return true;
+    }else{ 
+        return false;
+    }
+ });
+});  
+ function isValid(){ 
+    if($("input[name='shopName']").val().length<=0){ 
+        $("#main-tip").html('名称不能为空');
+        $("#main-tip").css('display', 'inline-block');
+        return false;
+    }
+    if($("input[name='shopTip']").val().length<=0){ 
+        $("#main-tip").html('经营范围不能为空');
+        $("#main-tip").css('display', 'inline-block');
+        return false;
+    }
+    if($("input[name='address']").val().length<=0){ 
+        $("#main-tip").html('地址不能为空');
+        $("#main-tip").css('display', 'inline-block');
+        return false;
+    }
+    $("#main-tip").hide();
+    return true;
+ }
+</script>
+</body>  
+</html>

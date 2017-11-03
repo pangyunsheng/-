@@ -44,7 +44,9 @@
                 <a class="logo" href="/"></a>
                 <div class="search">
                 <img class="search-icon" src="__IMG_PATH__/icon_search.png" width="20" height="20">
-                <input id="search-input" class="search-input" type="text" placeholder="请输入楼名" onkeypress="onKeySearch()">
+
+                <input id="search-input" class="search-input" type="text" placeholder="请输入菜名" onkeydown="mohu_search()">
+
                 <span id="search-del" class="search-del">&times;</span> 
                 </div>
                 <div class="clear"></div>
@@ -53,20 +55,49 @@
                 <div class="login fl">
 
                     <span class="header-operater">
-                    <a href="/">外卖</a>
-                    <a href="/index/User/order">我的订单</a>
-                    <a href="/about.html?p=lianxiwomen">联系我们</a> 
+                    <a href="/index/Shop/shop_list">外卖</a>
+                    <a id="order" href="/index/OrderList/order">我的订单</a>                
+                    <a href="/index/About/enter">商家入驻</a> 
+                    <a id="houtai" href="/admin/login/login">后台管理</a> 
                     </span> 
                     <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
                     登录
                     </a>
                     <a id="header-user"></a>
                 </div>
+                
+                <!-- 后台入口显示 -->
+                <script>
+                    var username = $.cookie('userId');
+                    if(!username)
+                    {
+                        $('#houtai').hide();
+                    }else{
+                        $.post(
+                            '/index/User/hou_tai',
+                            {username:username},
+                            function(data){
+                                $res = $.parseJSON(data);
+                                if($res.status == 'success'){
+                                  if($res.code == 0){
+                                    $('#houtai').show();
+                                 }else{
+                                    $('#houtai').hide();
+                                 }
+
+                                }else{
+                                    showAlert("服务器异常");
+                                }
+                                
+                            }
+                        );
+                    }
+                </script>
 
                 <!-- 购物车 -->
-                <div id="cart" class="cart fr"> 
+               <!--  <div id="cart" class="cart fr"> 
                     <img class="cart-icon" src="__IMG_PATH__/icon_cart_22_22.png">
-                </div>
+                </div> -->
 
                 <!-- 用户头像 -->
                 <div id="user" class="user fr n">
@@ -76,14 +107,25 @@
 			
 			<!-- 登录后在 --头顶部icon_my.png头像--显示 -->
             <ul id="subnav" class="subnav subnav-shadow n">
-                <li><a href="/index/Setting/setting" target="">账号设置</a></li>
-                <li><a href="/index/OrderList/order" target="" id="order">我的订单</a></li>
-                <li><a href="/index/User/balance" target="">我的余额</a></li>
-                <li><a href="/index/Jifen/score" target="">我的积分</a></li>
-                <li><a href="/index/Address/address" target="">我的地址</a></li>
+                <li><a href="" target="" id="a6">最新订单</a></li>
+                <li><a href="" target="" id="a7">历史订单</a></li>
+                <li><a href="" target="" id="a8">我的积分</a></li>
+                <li><a href="" target="" id="a9">我的收藏</a></li>
+                <li><a href="" target="" id="a10">账户设置</a></li>
                 <li><a id="sub-logout" href="" target="">退出</a></li>
             </ul>
         </div>
+
+        <!-- 赋值href -->
+            <script>
+                $username = $.cookie('userId');
+
+                $('#a6').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a7').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a8').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a9').attr('href', '/index/User/collect/username/'+$username);
+                $('#a10').attr('href', '/index/Setting/setting/username/'+$username);
+            </script>
 
 
 <!--------------------------- 购物车展示 -------------------------------->
@@ -115,135 +157,141 @@
             
             <div class="place-wrap-1">
                 <div class="place-cc">
-                <span>北京</span>
+                <span>深圳</span>
                 <a>[切换城市]</a>
 
                 </div>
-                <div class="place-wrap place-shadow">
+
+                <!-- 地区 -->
+                <div class="place-wrap place-shadow" id="sea"></div>
+
+                <div class="place-wrap place-shadow" id="hid">
                     <div class="place-tab">
                     <ul>
-                        <li><a id="t1"  class="alive">朝阳区</a></li>
-                        <li><a id="t2">海淀区</a></li>
-                        <li><a id="t3">西城区</a></li>
-                        <li><a id="t4">东城区</a></li>
-                        <li><a id="t5">大兴区</a></li>
-                        <li><a id="t6">昌平区</a></li>
-                        <li><a id="t7">通州区</a></li>
+                        <li><a id="t1"  class="alive">福田区</a></li>
+                        <li><a id="t2">罗湖区</a></li>
+                        <li><a id="t3">南山区</a></li>
+                        <li><a id="t4">盐田区</a></li>
+                        <li><a id="t5">宝安区</a></li>
+                        <li><a id="t6">龙岗区</a></li>
+                        <!-- <li><a id="t7">通州区</a></li> -->
                         <li><a id="t8">其它</a></li>
                     </ul>
                     </div>
                     <div id="n1" class="place-names">
-                        <div class="name-item"><a  class="place-link" href="shop.html">北辰世纪中心</a></div>
-                        <div class="name-item"><a href="shop.html">世通国际大厦</a></div>
-                        <div class="name-item"><a href="shop.html">华贸中心</a></div>
-                        <div class="name-item"><a href="shop.html">华腾劲松商务楼</a></div>
-                        <div class="name-item"><a href="shop.html">华腾旌凯大厦</a></div>
-                        <div class="name-item"><a href="shop.html">金泰国际大厦</a></div>
-                        <div class="name-item"><a href="shop.html">金泰大厦</a></div>
-                        <div class="name-item"><a href="shop.html">金泰国益大厦</a></div>
-                        <div class="name-item"><a href="shop.html">北京富力中心</a></div>
-                        <div class="name-item"><a href="shop.html">华腾旌凯写字楼</a></div>
-                        <div class="name-item"><a href="shop.html">世茂国际中心</a></div>
-                        <div class="name-item"><a class="new" a href="shop.html">华腾北搪商务大厦</a></div>
+                        <div class="name-item"><a  class="place-link" href="/index/Shop/shop_list">北辰世纪中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">世通国际大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">华贸中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">华腾劲松商务楼</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">华腾旌凯大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">金泰国际大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">金泰大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">金泰国益大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">北京富力中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">华腾旌凯写字楼</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">世茂国际中心</a></div>
+                        <div class="name-item"><a class="new" a href="/index/Shop/shop_list">华腾北搪商务大厦</a></div>
                     </div>
                     <div id="n2" class="place-names n">
-                        <div class="name-item"><a href="shop.html">城建大厦</a></div>
-                        <div class="name-item"><a href="shop.html">华腾科技大厦</a></div>
-                        <div class="name-item"><a href="shop.html">奥北科技园</a></div>
-                        <div class="name-item"><a href="shop.html">翠微路国企写字楼</a></div>
-                        <div class="name-item"><a href="shop.html">电信实业大厦</a></div>
-                        <div class="name-item"><a href="shop.html">理想国际大厦</a></div>
-                        <div class="name-item"><a href="shop.html">丰裕写字楼</a></div>
-                        <div class="name-item"><a href="shop.html">中关村资本大厦</a></div>
-                        <div class="name-item"><a href="shop.html">融汇国际大厦</a></div>
-                        <div class="name-item"><a class="new" a href="shop.html">金泰富地大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">城建大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">华腾科技大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">奥北科技园</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">翠微路国企写字楼</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">电信实业大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">理想国际大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">丰裕写字楼</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">中关村资本大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">融汇国际大厦</a></div>
+                        <div class="name-item"><a class="new" a href="/index/Shop/shop_list">金泰富地大厦</a></div>
                     </div>
                     <div id="n3" class="place-names n">
-                        <div class="name-item"><a>首建金融中心</a></div>
-                        <div class="name-item"><a>港中旅大厦</a></div>
-                        <div class="name-item"><a>通港大厦</a></div> 
-                        <div class="name-item"><a>德胜置业大厦</a></div> 
-                        <div class="name-item"><a>众志金开金融大厦</a></div> 
-                        <div class="name-item"><a>茅台大厦</a></div> 
-                        <div class="name-item"><a>月坛中心</a></div> 
-                        <div class="name-item"><a>合生财富广场</a></div> 
-                        <div class="name-item"><a>中基大厦</a></div> 
-                        <div class="name-item"><a>成铭大厦</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">首建金融中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">港中旅大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">通港大厦</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">德胜置业大厦</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">众志金开金融大厦</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">茅台大厦</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">月坛中心</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">合生财富广场</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">中基大厦</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">成铭大厦</a></div> 
                     </div>
                     <div id="n4" class="place-names n">
-                        <div class="name-item"><a>居然大厦</a></div>
-                        <div class="name-item"><a>五矿广场</a></div>
-                        <div class="name-item"><a>新闻大厦</a></div>
-                        <div class="name-item"><a>信德京汇中心</a></div> 
-                        <div class="name-item"><a>皇城国际商务中心</a></div>
-                        <div class="name-item"><a>民生金融中心</a></div>
-                        <div class="name-item"><a>国盛中心</a></div>
-                        <div class="name-item"><a>北京京文大厦</a></div>
-                        <div class="name-item"><a>神华州际大厦</a></div>
-                        <div class="name-item"><a>宇飞大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">居然大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">五矿广场</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">新闻大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">信德京汇中心</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">皇城国际商务中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">民生金融中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">国盛中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">北京京文大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">神华州际大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">宇飞大厦</a></div>
                     </div>
                     <div id="n5" class="place-names n">
-                        <div class="name-item"><a>鸿坤广场</a></div>
-                        <div class="name-item"><a>星光视界中心</a></div> 
-                        <div class="name-item"><a>联港城市广场</a></div> 
-                        <div class="name-item"><a>创意港·铜锣湾</a></div> 
-                        <div class="name-item"><a>文化都汇</a></div> 
-                        <div class="name-item"><a>星光影视园</a></div> 
-                        <div class="name-item"><a>兴创国际中心</a></div> 
-                        <div class="name-item"><a>泰禾中央广场</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">鸿坤广场</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">星光视界中心</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">联港城市广场</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">创意港·铜锣湾</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">文化都汇</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">星光影视园</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">兴创国际中心</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">泰禾中央广场</a></div> 
                     </div>
                     <div id="n6" class="place-names n">
-                        <div class="name-item"><a>昌平创业大厦</a></div>
-                        <div class="name-item"><a>果栋LOFT</a></div>  
-                        <div class="name-item"><a>TBD云集中心</a></div>  
-                        <div class="name-item"><a>金隅万科广场</a></div>  
-                        <div class="name-item"><a>新元科技园</a></div>  
-                        <div class="name-item"><a>福环国际创新园</a></div>  
-                        <div class="name-item"><a>住总万科·金域国际中心</a></div>  
-                        <div class="name-item"><a>龙冠商务中心</a></div>  
+                        <div class="name-item"><a href="/index/Shop/shop_list">昌平创业大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">果栋LOFT</a></div>  
+                        <div class="name-item"><a href="/index/Shop/shop_list">TBD云集中心</a></div>  
+                        <div class="name-item"><a href="/index/Shop/shop_list">金隅万科广场</a></div>  
+                        <div class="name-item"><a href="/index/Shop/shop_list">新元科技园</a></div>  
+                        <div class="name-item"><a href="/index/Shop/shop_list">福环国际创新园</a></div>  
+                        <div class="name-item"><a href="/index/Shop/shop_list">住总万科·金域国际中心</a></div>  
+                        <div class="name-item"><a href="/index/Shop/shop_list">龙冠商务中心</a></div>  
                     </div>
                     <div id="n7" class="place-names n">
-                        <div class="name-item"><a>东亚环球国际</a></div>
-                        <div class="name-item"><a>富力运河十号</a></div> 
-                        <div class="name-item"><a>保利大都汇</a></div>
-                        <div class="name-item"><a class="new">嘉逸商务园</a></div>
-                        <div class="name-item"><a>合创产业中心</a></div>
-                        <div class="name-item"><a>99号文化创意产业大厦</a></div>
-                        <div class="name-item"><a>华远铭悦好天地</a></div>
-                        <div class="name-item"><a>通州万达广场</a></div>
-                        <div class="name-item"><a>国际健康港</a></div>
-                        <div class="name-item"><a>北京ONE大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">东亚环球国际</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">富力运河十号</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">保利大都汇</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list" class="new">嘉逸商务园</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">合创产业中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">99号文化创意产业大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">华远铭悦好天地</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">通州万达广场</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">国际健康港</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">北京ONE大厦</a></div>
                     </div>
                     <div id="n8" class="place-names n">
-                        <div class="name-item"><a>全球创新港（亦城财富中心）</a></div>
-                        <div class="name-item"><a>国投尚科大厦</a></div> 
-                        <div class="name-item"><a>中航技广场</a></div> 
-                        <div class="name-item"><a>亦城科技中心</a></div>
-                        <div class="name-item"><a>华夏幸福创新中心</a></div>
-                        <div class="name-item"><a>贝壳菁汇</a></div>
-                        <div class="name-item"><a>首创中心</a></div>
-                        <div class="name-item"><a>汉威国际广场</a></div>
-                        <div class="name-item"><a>南方弘泰大厦</a></div>
-                        <div class="name-item"><a>首特钢创业大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">全球创新港（亦城财富中心）</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">国投尚科大厦</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">中航技广场</a></div> 
+                        <div class="name-item"><a href="/index/Shop/shop_list">亦城科技中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">华夏幸福创新中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">贝壳菁汇</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">首创中心</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">汉威国际广场</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">南方弘泰大厦</a></div>
+                        <div class="name-item"><a href="/index/Shop/shop_list">首特钢创业大厦</a></div>
                     </div>
                 </div> 
+
+
             </div>
 
           
             <div class="footer-content">
                   <div class="footer-content-entrance">
-                    <a class="footer-content-link" href="/about.html?p=guanyuwomen">关于我们</a>
+                    <a class="footer-content-link" href="/">关于我们</a>
                     <span class="footer-content-separator">|</span>
                     <a class="footer-content-link footer-content-weixing">关注微信
                     <img class="weixin-pic" src="__IMG_PATH__/qr_code.jpg">
                     </a>
                     <span class="footer-content-separator">|</span> 
-                    <a class="footer-content-link" href="/about.html?p=tousujianyi">投诉建议</a>
+                    <a class="footer-content-link" href="/index/About/enter">投诉建议</a>
                     <span class="footer-content-separator">|</span>
-                    <a class="footer-content-link kaidian_address" href="/about.html?p=shangjiaruzhu">商家入驻</a>
+                    <a class="footer-content-link kaidian_address" href="/index/About/enter">商家入驻</a>
 
                   </div>
-                  <div class="footer-content-copyright">©2016 dingfanzu.com <a target="_blank">京ICP证020666号</a> </div>
+                  <div class="footer-content-copyright">©2017 <a target="_blank">粤ICP备17106509号-1</a> </div>
             </div>
             
 
@@ -253,11 +301,12 @@
 
         
         <ul  class="place-nav n">
-                <li><a class="city">北京</a></li>
-                <li><a class="city">天津</a></li>
+                <li><a class="city">深圳</a></li>
+                <li><a class="city">广州</a></li>
         </ul>
     </div>
-
+    
+    <!-- 登录 -->
     <div id="myModal" class="reveal-modal"> 
         <div id="loginform" class="loginform n">
             <div>
@@ -403,10 +452,25 @@
     <script src="__JS_PATH__/cart.js"></script>
     <script src="__JS_PATH__/header.js"></script>
     <script src="__JS_PATH__/footer.js"></script>
+     <!-- <script src="__JS_PATH__/account.js"></script> -->
     
     <!-- 如果用户名存在且cookie没有过期 -->
     <script>
         $(function(){
+
+            //如果未登录点击就点击我的订单，跳出登录页面
+            $('#order').click(function(event){
+                var $username = $.cookie('userId');
+                if(!$.cookie('userId'))
+                {
+                    //未登录跳出登录页面（自动绑定点击事件）
+                    $('#header-login').trigger('click');     
+                }else{
+                    location.href = '/index/OrderList/order/username/'+$username;
+                }
+                return false;
+            });
+
 
             // cookie用户信息
             if($.cookie('userId'))
@@ -525,6 +589,57 @@
             $(".footer-content").show();
         }
     </script>
+    
+    <!-- 搜索 -->
+     <script>
+                $(function(){
+                  $('#sea').hide();
+                document.onkeydown=function mohu_search(e){       
+                   e = e||event;  
+                   if(e.keyCode == 13)
+                   {
+                        cha();
+                   }
+
+                   function cha()
+                   {
+                        var keyword=$('.search-input').val().trim();
+                        if(keyword==""||keyword.length<=0){
+                        $(".search-result").empty();
+                        $("#search-del").css("visibility","hidden");
+                        return;
+                      }
+                        $.post(
+                            '/index/Index/mohu_search',
+                            {meal_name:keyword},
+                            function(data)
+                            {
+
+                                console.log(data);
+                                for(var i=0; i<data.length; i++)
+                                {
+                                    var content = 
+                                    "<a style='color:#333;' href=/index/Shop/shop_detail/shop_id/"
+                                    +data[i][0]['shop_id']
+                                    +">"
+                                    +data[i][0]['meal_name']
+                                    +"</a>"
+                                    +"<br/>";
+
+                                    $('#hid').hide();
+                                    $('#sea').show();
+                                    $('#sea').append(content);
+                                }
+                            }
+                        );
+
+                   }
+
+                   return;  
+                } 
+                  });                             
+                </script>
 
 </body>
 </html>
+

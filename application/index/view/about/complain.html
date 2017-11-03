@@ -1,0 +1,528 @@
+﻿
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="description" content="“订饭组（dingfanzu.com）”是北京地区知名的在线外卖订餐O2O平台，是写字楼白领专属订餐网站。已覆盖北京数百个写字楼，数十万用户，聚集了数千家餐饮商户。订外卖，找订饭组。" />
+        <script src="__JS_PATH__jquery-1.8.3.js"></script>
+        <script src="__JS_PATH__jquery.reveal.js"></script>
+        <script src="__JS_PATH__jquery.cookie.js"></script>
+        <script src="__JS_PATH__baidu_js_push.js"></script>
+        <script src="__JS_PATH__common.js"></script>
+
+        <link rel="icon" href="/static/img/logo-50-50.jpg" type="image/x-icon" />
+         
+        <link rel=stylesheet href="__CSS_PATH__reset.css">
+        <link rel=stylesheet href="__CSS_PATH__common.css">
+        <link rel=stylesheet href="__CSS_PATH__base.css"> 
+        <link rel=stylesheet href="__CSS_PATH__header.css">
+        <link rel=stylesheet href="__CSS_PATH__shopcart.css"> 
+        <link rel=stylesheet href="__CSS_PATH__footer_1.css"> 
+        <link rel=stylesheet href="__CSS_PATH__reveal.css">
+        <link rel=stylesheet href="__CSS_PATH__login.css">
+        <link rel=stylesheet href="__CSS_PATH__about.css">
+        <title>关于-订饭组-写字楼外卖_订餐组_订餐官网</title>
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "//hm.baidu.com/hm.js?9bb651f2bb5622d49b0299560d6559cd";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+    </head>
+    <body>
+
+        <!--header部分-->
+        <div class="header shadow">
+            <div class="search-result"> 
+            </div>
+            <div class="header-left fl">
+                <div class="icon fl"></div>
+                <a class="weixin-dingfan fw" href="#">微信订饭</a>
+                <a class="logo" href="/"></a>
+                <div class="search">
+                <img class="search-icon" src="__IMG_PATH__icon_search.png" width="22" height="22">
+                <input id="search-input" class="search-input" type="text" placeholder="请输入楼名" onkeypress="onKeySearch()">
+                <span id="search-del" class="search-del">&times;</span> 
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="header-right fr">
+                <div class="login fl">
+
+                      <span class="header-operater">
+                    <a href="/index/Shop/shop_list">外卖</a>
+                    <a id="order" href="/index/OrderList/order">我的订单</a>
+                    <a href="/index/About/enter">商家入驻</a>
+                    <a id="houtai" href="/admin/login/login">后台管理</a> 
+                    </span> 
+                    <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
+                    登录
+                    </a>
+                    <a id="header-user"></a>
+                </div>
+               <!--  <div id="cart" class="cart fr"> 
+                    <img class="cart-icon" src="__IMG_PATH__icon_cart_22_22.png">
+                </div> -->
+                <div id="user" class="user fr n">
+                    <img class="user-icon" src="__IMG_PATH__icon_my.png"> 
+                </div> 
+            </div> 
+
+             <!-- 后台入口显示 -->
+                <script>
+                    var username = $.cookie('userId');
+                    if(!username)
+                    {
+                        $('#houtai').hide();
+                    }else{
+                        $.post(
+                            '/index/User/hou_tai',
+                            {username:username},
+                            function(data){
+                                $res = $.parseJSON(data);
+                                if($res.status == 'success'){
+                                  if($res.code == 0){
+                                    $('#houtai').show();
+                                 }else{
+                                    $('#houtai').hide();
+                                 }
+
+                                }else{
+                                    showAlert("服务器异常");
+                                }
+                                
+                            }
+                        );
+                    }
+                </script>
+
+             <!-- 登录后在 --头顶部icon_my.png头像--显示 -->
+            <ul id="subnav" class="subnav subnav-shadow n">
+                <li><a href="" target="" id="a6">最新订单</a></li>
+                <li><a href="" target="" id="a7">历史订单</a></li>
+                <li><a href="" target="" id="a8">我的积分</a></li>
+                <li><a href="" target="" id="a9">我的收藏</a></li>
+                <li><a href="" target="" id="a10">账户设置</a></li>
+                <li><a id="sub-logout" href="" target="">退出</a></li>
+            </ul>
+        </div>
+
+        <!-- 赋值href -->
+            <script>
+                $username = $.cookie('userId');
+                 $('#order').attr('href', '/index/OrderList/order/username/'+$username);
+
+                $('#a6').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a7').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a8').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a9').attr('href', '/index/User/collect/username/'+$username);
+                $('#a10').attr('href', '/index/Setting/setting/username/'+$username);
+            </script>
+
+
+        <!--内容部分-->
+        <div class="about-content">   
+            <div class="about-header">
+                <div class="header-text-bg">
+                </div>
+            </div>
+            <div class="about-nav">
+                <div class="nav">
+                <ul>
+                    <li><a forward="guanyuwomen" class="static" href="">关于我们</a></li>
+                    <li><a forward="lianxiwomen" class="static" href="">联系我们</a></li>
+                    <li><a forward="tousujianyi" class="static"   href="/index/About/complain">投诉建议</a></li>
+                    <li><a forward="jiaruwomen" class="static" href="">加入我们</a></li>
+                    <li><a forward="shangjiaruzhu" class="static" href="/index/About/enter">商家入驻</a></li>
+                </ul>
+                </div>
+            </div>
+
+            <div class="about-body"> 
+                <!--投诉建议--> 
+                <div id="tousujianyi" class="body-wrap ">
+                    <div class="body-header">
+                        <span>投诉建议</span>
+                    </div>
+                    <div class="body-content">
+                        <span class="bft">任何问题和建议，可以告诉我们哦~</span>
+                        <span>
+                        <textarea id="tousu-txt" maxLength="150"/></textarea>
+                        </span>
+                        <span class="paddingTB-20">
+                            <a id="tousu-commit" class="btn-commit">提交</a>
+                        </span>
+                    </div> 
+                </div>
+                <div  class="body-wrap n">
+                    <form enctype="multipart/form-data" method="post">
+                    <div class="body-header">
+                        <span>商家入驻</span>
+                    </div>
+                    <div class="body-content">
+                        <span class="bft">您好，订饭组正在需要寻找更多的外卖店，他需要味道好，服务好，干净卫生，价格合理，当然最好是中式快餐哦，如果您有合适的餐馆推荐，一定要告诉我们哦~我们会去沟通考察。</span>
+                        <div class="shangjiaruzhu"> 
+                        
+                            <span>店铺名称: <input id="shopName" maxlength="20"></span>
+                            <span>详细地址: <input id="shopAddr" maxlength="50"></span>
+                            商户类型：<input id="shopType" type="radio" name="">企业商户 <input id="shopType" type="radio" name="">
+                            个人商户
+                        </span>
+                            <span>经营范围: 
+                                <input id="range" name="checkbox[]" type="checkbox">快食简餐
+                                <input id="range" name="checkbox[]" type="checkbox">中式正餐
+                                <input id="range" name="checkbox[]" type="checkbox">西餐简餐
+                                <input id="range" name="checkbox[]" type="checkbox">烧烤海鲜
+                                <input id="range" name="checkbox[]" type="checkbox">甜点饮品
+                                <input id="range" name="checkbox[]" type="checkbox">水果生鲜
+                                <input id="range" name="checkbox[]" type="checkbox">下午茶
+                                <input id="range" name="checkbox[]" type="checkbox">鲜花蛋糕
+                                <input id="range" name="checkbox[]" type="checkbox">夜宵
+                            </span>
+                            <span>联 &nbsp;系&nbsp; 人:  <input id="name" maxlength="20"></span>
+                            <span>联系电话: <input id="phone" maxlength="100"></span>
+                            <span>配送方式：<input id="delivery" type="radio">平台提供配送
+                            <input id="delivery" type="radio">商家自配送</span>
+                            <span>图片信息：1.店铺门面图<input id="image" type="file" name="image" />  
+                                            2.店内环境图<input id="image" type="file" name="image" /></span>
+                            <span><a id="commit" class="btn-commit">提交</a></span>
+
+                        </div>
+                    </div>   
+                </div>
+            </div> 
+        </form>
+         <div class="footer-wrap">
+            <div class="footer-content">
+                  <div class="footer-content-entrance">
+                    <a class="footer-content-link" href="/index/About/enter">关于我们</a>
+                    <span class="footer-content-separator">|</span>
+                    <a class="footer-content-link footer-content-weixing">关注微信
+                    <img class="weixin-pic" src="__IMG_PATH__qr_code.jpg">
+                    </a>
+                    <span class="footer-content-separator">|</span> 
+                    <a class="footer-content-link" href="/index/About/enter">投诉建议</a>
+                    <span class="footer-content-separator">|</span>
+                    <a class="footer-content-link kaidian_address" href="/index/About/enter">商家入驻</a>
+
+                  </div>
+                  <div class="footer-content-copyright">©2017 订饭组 <a target="_blank">粤ICP备17106509号-1</a> </div>
+            </div>
+        </div>
+            
+        </div>
+          
+            
+
+            <div class="shop-cart shadow n">
+                <div class="shop-head">
+                    购物车<a class="shop-clear">[清空]</a>
+                </div>
+                <div class="shop-body">    
+                    
+
+                    <div class="isnull">
+                        <span></span>
+                        <b>购物车空空如也</b>
+                    </div>
+                </div>
+                <div class="shop-bottom">
+                    <div class="bottom-price fl">总计：￥<label>32</label>
+                    </div>
+                    <div class="bottom-icon"></div>
+                    <div class="bottom-pay fr">
+                        <a id="cart-pay">结算</a>
+                    </div>
+                </div>
+        </div> 
+    </div>
+
+    <div id="myModal" class="reveal-modal"> 
+        <div id="loginform" class="loginform n">
+            <div>
+                <div class="loginformfield">
+                    <span class="form-icon"><img src="__IMG_PATH__logo-50-50.jpg"></span>
+                </div>
+                <div class="loginformfield">
+                    <span class="form-title">
+                    <h2>使用手机号登录订饭组</h2>
+                    </span>
+                </div>
+                <div class="loginformfield">
+                    <label class="field-name">手机号:</label>
+                    <input id="phone-1" placeholder="请输入您的手机号">
+                    <div class="loginformfield-hint form-error">
+                        <span id="login-phone-error"></span>
+                    </div>
+                </div>
+                <div class="loginformfield">
+                    <label class="field-name">密码:</label>
+                    <span class="fp"><a href="#" id="forget-password" class="forget-password">忘记密码？</a></span>
+                    <input id="login-pwd" type="password" placeholder="密码">
+                    <div class="loginformfield-hint form-error">
+                        <span id="login-pwd-error"></span>
+                    </div>
+                </div> 
+            </div>
+            <div class="loginform-buttons">
+                <a id="checkin" class="save-btn" href="#">登录</a>
+                <span >还没有账号？<a id="register">创建一个</a></span>
+            </div> 
+        </div>
+        <div id="registerform" class="registerform n">
+            <div>
+                <div class="loginformfield">
+                    <span class="form-icon"><img src="__IMG_PATH__logo-50-50.jpg"></span>
+                </div>
+                <div class="loginformfield">
+                    <span class="form-title">
+                    <h2>创建新账号</h2>
+                    </span>
+                </div>
+                <div class="loginformfield">
+                    <label class="field-name">手机号:</label>
+                    <input id="phone-2" placeholder="请输入您的手机号">
+                    <div class="loginformfield-hint form-error">
+                        <span id="register-phone-error"></span>
+                    </div>
+                </div>
+                <div class="loginformfield field-confirm-code">
+                    <label class="field-name">验证码:</label> 
+                    <input   id="register-confirm-code" placeholder="请输入验证码">
+                    <button id="register-code" class="phone-code-btn">获取验证码</button>
+                    <input type="hidden" id="register-hid-code">
+                    <div class="loginformfield-code-hint form-error">
+                        <span id="register-code-error"></span>
+                    </div>
+                </div> 
+                <div class="loginformfield">
+                    <label class="field-name">请输入密码:</label> 
+                    <input id="register-pwd" type="password" placeholder="请输入6位以上字母或数字密码">
+                    <div class="loginformfield-hint form-error">
+                        <span id="register-pwd-error"></span>
+                    </div>
+                </div> 
+            </div>
+            <div class="loginform-buttons">
+                <a id="create" class="save-btn" href="#">创建</a>
+                <span >已经有账号？<a id="login">登录</a></span>
+            </div> 
+        </div>
+        <div id="chpwdform" class="chpwdform n">
+            <div>
+                <div class="loginformfield">
+                    <span class="form-icon"><img src="__IMG_PATH__logo-50-50.jpg"></span>
+                </div>
+                <div class="loginformfield">
+                    <span class="form-title">
+                    <h2>修改密码</h2>
+                    </span>
+                </div>
+                <div class="loginformfield">
+                    <label class="field-name">手机号:</label>
+                    <input id="phone-3" placeholder="请输入您的手机号">
+                    <div class="loginformfield-hint form-error">
+                        <span id="chpwd-phone-error"></span>
+                    </div>
+                </div>
+                <div class="loginformfield field-confirm-code">
+                    <label class="field-name">验证码:</label> 
+                    <input  id="chpwd-confirm-code"  placeholder="请输入验证码">
+                    <button id="chpwd-code" class="phone-code-btn">获取验证码</button>
+                    <input type="hidden" id="chpwd-hid-code">
+                    <div class="loginformfield-code-hint form-error">
+                        <span id="chpwd-code-error"></span>
+                    </div>
+                </div> 
+                <div class="loginformfield">
+                    <label class="field-name">新密码:</label> 
+                    <input id="chpwd-pwd" type="password" placeholder="请输入6位以上字母或数字密码">
+                    <div class="loginformfield-hint form-error">
+                        <span id="chpwd-pwd-error"></span>
+                    </div>
+                </div> 
+            </div>
+            <div class="loginform-buttons">
+                <a id="chpwd" class="save-btn" href="#">确定</a>
+                <span >没有忘记密码？<a id="back-login">返回</a></span>
+            </div> 
+        </div>
+
+
+        <a class="close-reveal-modal"><img src="__IMG_PATH__icon_close.png" height="24" width="24"></a>
+    </div>
+
+    <!--提示框-->
+    <div id="alertModel" class="alertModel" >
+    <a id="alert" data-reveal-id="alertModel" data-animation="fade"></a>
+    <span id="alert-msg"></span>
+    <button id="btn-ok" class="btn">知道了</button>
+    <a class="close-reveal-modal"><img src="__IMG_PATH__icon_close.png" height="24" width="24"></a>
+    </div>
+
+
+    <script src="__JS_PATH__md5.js"></script>
+    <script src="__JS_PATH__myinfo.js"></script>
+    <script src="__JS_PATH__login.js"></script>
+    <script src="__JS_PATH__cart.lib.js"></script>
+    <script src="__JS_PATH__cart.js"></script>
+    <script src="__JS_PATH__header.js"></script> 
+    <script src="__JS_PATH__footer.js"></script>
+    <script src="__JS_PATH__about.js"></script>
+
+    <script>
+    $(function(){
+         //如果未登录点击就点击我的订单，跳出登录页面
+            $('#order').click(function(event){
+                var $username = $.cookie('userId');
+                if(!$.cookie('userId'))
+                {
+                    //未登录跳出登录页面（自动绑定点击事件）
+                    $('#header-login').trigger('click');     
+                }else{
+                    location.href = '/index/OrderList/order/username/'+$username;
+                }
+                return false;
+            });
+
+
+         // 如果用户名存在且cookie没有过期
+       if($.cookie('userId'))
+        {
+            var userId=$.cookie('userId');
+            $('#header-user').html('hi，'+userId);
+            $('#header-user').show();
+            $('#header-login').hide(); 
+            $('#user').show();
+        }
+        //获取url跳转参数
+        var name=getUrlParam('p');
+        if(name){
+            $(".nav a[forward="+name+"]").addClass('active');
+            $('.body-wrap').hide();
+            $("#"+name).fadeIn(300); 
+        }
+
+
+        //导航切换
+        $(".nav a").click(function() { 
+            var forward=$(this).attr('forward');
+            location.href = "about.html?p="+forward;
+        });
+
+        //初始化购物车
+        initCart();
+
+        //footer
+        processFooter();
+
+        //地址悬浮
+        $(".place-cc a,.place-nav").hover(function() { 
+            $('.place-nav').show();
+        }, function() {
+        $('.place-nav').hide();
+        });
+        
+        //购物车相关 
+        var shopCartWidth=$(".shop-cart").width(); 
+        //默认隐藏购物车
+        $(".shop-cart,.shop-bottom").css("right",-shopCartWidth); 
+        var mRight=-shopCartWidth;
+        
+        $("#cart").click(function(){
+            $('.shop-cart').show(); 
+            //适配购物车
+            processShopItem();
+            
+            shopCartWidth=$(".shop-cart").width();
+            if(mRight=='0px'){
+                mRight=-shopCartWidth;
+                $(".shop-cart,.shop-bottom").animate({right:mRight},200);
+            }
+            else{
+                mRight='0px';
+                $(".shop-cart,.shop-bottom").animate({right:mRight},200);
+            }
+        });
+
+         
+
+
+        //中间高 
+        var zw=$(window).width();
+        var middleWidth=$('.place-wrap').width();
+        var middleHeight=$('.place-wrap').height();
+        var marginLeft=(zw-middleWidth)/2; 
+        $(".place-wrap-1").css("marginLeft",marginLeft); 
+        $(".place-wrap-1").show(); 
+
+        //地址选择悬浮
+        $(".place-nav").css("left",marginLeft+32);//再加32
+        //地址点击
+        $('.city').click(function(event) {
+            if($(this).text()!="济南"){ 
+             alert("未开通");
+            }else{
+                window.location.reload();
+            }
+        });
+
+        //弹出动画
+        $(".place-wrap").animate({"opacity":"0.9"}, 200);
+
+         
+
+
+        $(window).resize(function(){
+            //中间高 
+            var zw=$(window).width();
+            var middleWidth=$('.place-wrap').width();
+            var middleHeight=$('.place-wrap').height();
+            var marginLeft=(zw-middleWidth)/2; 
+            $(".place-wrap-1").css("marginLeft",marginLeft); 
+            //地址选择悬浮
+            $(".place-nav").css("left",marginLeft+32);
+
+            //适配购物车
+            processShopItem();
+
+            $('.shop-cart').hide();
+            var shopCartWidth=$(".shop-cart").width(); 
+            //默认隐藏购物车
+            $(".shop-cart,.shop-bottom").css("right",-shopCartWidth); 
+            mRight=-shopCartWidth;
+
+            processFooter();
+        });
+     
+
+            //tab点击事件
+            $('.place-tab a').click(function(){
+                //变样式
+                var cl=$(this).parents('.place-tab').find('a');
+                cl.removeClass('alive');
+                $(this).addClass('alive');
+                var pid=$(this).attr('id');
+                $('.place-names').hide();
+                var n="#"+pid.replace('t','n');
+                $(n).show();
+            });
+        });
+
+        function processFooter(){
+            $(".footer-content").show();
+        }
+
+
+        //获取url跳转参数 
+        function getUrlParam(name) {
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");  
+          var r = window.location.search.substr(1).match(reg); //匹配目标参数
+          if (r != null) return unescape(r[2]); return null; //返回参数值
+        }
+    </script>
+</body>
+</html>

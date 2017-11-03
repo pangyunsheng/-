@@ -44,8 +44,17 @@
 
         var balance = parseInt(a) - parseInt(b)*10;
 
-        var order_time = new Date().getTime(); //获取当前时间戳
-        
+        var time = new Date().toLocaleDateString(); //获取日期
+        var date = new Date();
+        var h = date.getHours();//获取小时 0-23
+        var m = date.getMinutes();//获取分钟 0-59
+        var s = date.getSeconds(); //获取秒数
+        var order_time = time+"  "+p(h)+':'+p(m)+':'+p(s);
+        //补零
+        function p(obj){
+            return obj<10 ? '0'+obj : obj;
+        }
+       
         var params = {
             username:username,
             shop_id:shop_id,
@@ -336,6 +345,7 @@ function saveAddress(){
 //新的初始化地址
 function start_address()
 {
+    console.log($('#address-name').val());
     //没添加内容时是空的
      if($('#address-name').val()==''){
         $('.checkout-noaddress').show();
@@ -359,8 +369,10 @@ function start_address()
             username:$username,
         },
         function(data) { 
-         // console.log(data); return; 
-        
+         // console.log(data); return;
+          
+         //如果返回的数据不是空的
+          if(data[0].order_name){  
             var name = data[0].order_name;
             var pn = data[0].order_phone;
             var addressDetail = data[0].order_address;
@@ -371,7 +383,8 @@ function start_address()
             $('.address-npa').html(address); 
             $('.close-reveal-modal').click();       
             $('.checkout-noaddress').hide();
-            $('.checkout-address').show();        
+            $('.checkout-address').show(); 
+        }       
     });
 }
 

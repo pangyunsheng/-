@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>添加店铺</title>
+
+<link rel=stylesheet href="__CSS_PATH__reset.css">
+<link rel="stylesheet" href="__CSS_PATH__bootstrap-admin.css"> 
+<link href="__CSS_PATH__global.css"  rel="stylesheet"  type="text/css"/>
+<link href="__CSS_PATH__backstage.css"  rel="stylesheet"  type="text/css"/>
+<style type="text/css">
+    td{
+        height: 40px;
+    }
+</style>
+</head>
+<body>  
+<span class="main-title">添加店铺 &nbsp; 需要审核的店铺{$res2|default="0"}家</span>
+<div id="main-tip"></div>
+<div class="form-add">
+<form id="form1" action="/admin/shop/addshops" method="post" enctype="multipart/form-data">
+<table class="table  table-bordered table-hover">
+    <tr>
+        <td align="right" width="20%"><span class="td-txt">店铺编号</span></td>
+        <td><input type="text" name="shop_id" value="{php}echo 'DFZ-00'.$res[0]['shop_id'];{/php}">
+        </td>
+    </tr> 
+    <tr>
+        <td align="right" width="20%"><span class="td-txt">店铺名称</span></td>
+        <td><input type="" value="{$res[0]['shop_name']} " name="shop_name"> 
+        </td>
+    </tr>
+    <tr>
+        <td align="right"><span class="td-txt">店铺介绍</span></td>
+        <td> <input type="" value="{$res[0]['shop_introduce']}" name="shop_introduce">  </td>
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">店铺地址</span></td>
+        <td> <input type="" value="{$res[0]['shop_addr']}" name="shop_addr">   </td>     
+    </tr>
+     <tr>
+        <td align="right"><span class="td-txt" maxlength='11' >联系电话</span></td>
+        <td> <input type="" value="{$res[0]['shop_tel']}" name="shop_tel">   </td>     
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">经营范围</span></td>
+        <td> <input type="" value="{$res[0]['cate_name']}" name="cate_name"></td>
+    </tr> 
+    <tr>
+        <td align="right"><span class="td-txt">营业时间</span></td>
+        <td> <input type="" value="{$res[0]['shop_opentime']}" name="shop_opentime">  </td>
+    </tr>
+</table>
+<input type="hidden" name="shop_id" value="{$res[0]['shop_id']}">
+<input class="btn btn-primary" type="submit" value="确认添加"/>
+</form>
+</div>
+
+<script type="text/javascript" src="__JS_PATH__jquery-1.8.3.js"></script>
+<script type="text/javascript">
+ $(document).ready(function(){ 
+   $("#form1").submit(function () {
+    if(isValid()){ 
+        return true;
+    }else{ 
+        return false;
+    }
+ });
+});  
+ function isValid(){ 
+    if($("input[name='shop_name']").val().length<=0){ 
+        $("#main-tip").html('名称不能为空');
+        $("#main-tip").css('display', 'inline-block');
+        return false;
+    }
+    if($("input[name='jingying']").val().length<=0){ 
+        $("#main-tip").html('');
+        $("#main-tip").css('display', 'inline-block');
+        return false;
+    }if($("input[name='address']").val().length<=0){ 
+        $("#main-tip").html('');
+        $("#main-tip").css('display', 'inline-block');
+        return false;
+    }if($("input[name='tell']").val().length<=0){ 
+        $("#main-tip").html('');
+        $("#main-tip").css('display', 'inline-block');
+        return false;
+    }
+   
+    $("#main-tip").hide();
+    return true;
+ }
+</script>
+</body>  
+</html>

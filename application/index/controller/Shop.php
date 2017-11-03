@@ -5,6 +5,9 @@ use app\index\model\ShopCate;
 use app\index\model\ShopList;
 use app\index\model\DishesCate;
 use app\index\model\Dishes;
+use app\index\model\Comment;
+use app\index\model\Collect;
+use app\index\model\Order;
 
 class Shop extends Controller
 {
@@ -12,6 +15,9 @@ class Shop extends Controller
 	protected $shop_list;
 	protected $dishes_cate;
 	protected $dishes;
+	protected $comment;
+	protected $collect;
+	protected $order;
 
 	protected function _initialize()
 	{
@@ -19,6 +25,9 @@ class Shop extends Controller
 		$this->shop_list = new ShopList();
 		$this->dishes_cate = new DishesCate();
 		$this->dishes = new Dishes();
+		$this->comment = new Comment();
+		$this->collect = new Collect();
+		$this->order = new Order();
 	}
 
 	//店铺展示
@@ -42,6 +51,7 @@ class Shop extends Controller
 	public function shop_detail()
 	{
 		$shop_id = input('param.shop_id');
+
 		$res = $this->shop_list->detail_info($shop_id);
 
 		//店家的菜类
@@ -50,11 +60,44 @@ class Shop extends Controller
 		//菜类下的小菜
 		$result = $this->dishes->cai($shop_id);
 
-		// dump($res3);die;
+		//评论区
+		$pl = $this->comment->pl_list($shop_id);
+		$count = $pl[0]; //评论数
+		$list = $pl[1]; //评论
+		$all = $pl[2]; //商品
+
+		$time = [];
+		$it = [];
+		$it_count = []; //多少件商品
+		foreach($all as $key=>$val)
+		{
+			$time[] = ceil((strtotime($val[0]['received_time']) - strtotime($val[0]['order_time']))/ 60); //时长
+
+			$it[$key] = json_decode($val[0]['item'], JSON_UNESCAPED_UNICODE); //商品，三维数组
+
+			$it_count[$key] = count($it[$key]);
+		}
+
+		//平均送达时间
+		$get_time = $this->order->goTime($shop_id);
+
+		//每道菜月售多少份
+		// $sell_num = $this->order->sell($shop_id);
+
+		// dump($sell_num);die;
+
+		$this->assign('get_time', $get_time);
+		$this->assign('it_count', $it_count);
+		$this->assign('count', $count);
+		$this->assign('it', $it);
+		$this->assign('time', $time);
+		$this->assign('list', $list);
 		$this->assign('c', $result[0]);
 		$this->assign('res3', $result[1]);
 		$this->assign('res2', $res2);
+
 		$this->assign('res', $res[0]);
+
 		return $this->fetch();
 	}
 
@@ -64,12 +107,14 @@ class Shop extends Controller
 	{
 		$post = input();
 		$res = $this->shop_list->choose_shop($post);
+		// return $res;
 		// return json_encode($res);
 		$result = [];
 		foreach($res as $val)
 		{
 			$str = "
-				<a href='/index/Shop/shop_detail/shop_id/'".$val['shop_id']." target='_blank'>
+				<a target='_blank' href='/index/Shop/shop_detail/shop_id/{$val['shop_id']}'
+				 >			
 				<div class='supplier'>
 				<img class='img' src='".$val['shop_pic']."'/>
 				<font id='suppliername' class='fontname'>".$val['shop_name']."</font><br />
@@ -87,6 +132,7 @@ class Shop extends Controller
 		return json_encode($result);
 	}
 
+	// 确认下单
 	public function order_confirm()
 	{
 		return $this->fetch();

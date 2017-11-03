@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <script src="__JS_PATH__/jquery-1.8.3.js"></script>
         <script src="__JS_PATH__/jquery.reveal.js"></script>
-        <!-- <script src="__JS_PATH__/jquery.cookie.js"></script> -->
+        <script src="__JS_PATH__/jquery.cookie.js"></script>
         <link rel="icon" href="/static/img/logo-50-50.jpg" type="image/x-icon" /> 
         <!--[if lte IE 10]>
         <script src="__JS_PATH__/requestanimationframe.js"></script>
@@ -41,32 +41,87 @@
             <div class="header-right fr">
                 <div class="login fl">
 
-                    <span class="header-operater">
-                    <a href="/">外卖</a>
-                    <a href="/index/User/order">我的订单</a>
-                    <a href="/about.html?p=lianxiwomen">联系我们</a> 
+                   <span class="header-operater">
+                    <a href="/index/Shop/shop_list">外卖</a>
+                    <a id="order" href="/index/OrderList/order">我的订单</a>
+                    <a href="/index/About/enter">商家入驻</a>
+                    <a id="houtai" href="/admin/login/login">后台管理</a> 
                     </span> 
-                    <a id="header-login" class="navBtn f-radius f-select n" data-reveal-id="myModal" data-animation="fade">
+                    <a id="header-login" class="navBtn f-radius f-select" data-reveal-id="myModal" data-animation="fade">
                     登录
                     </a>
+                    <a id="header-user"></a>
                 </div>
-                <div id="cart" class="cart fr"> 
+
+                 <!-- 后台入口显示 -->
+                <script>
+                    var username = $.cookie('userId');
+                    if(!username)
+                    {
+                        $('#houtai').hide();
+                    }else{
+                        $.post(
+                            '/index/User/hou_tai',
+                            {username:username},
+                            function(data){
+                                $res = $.parseJSON(data);
+                                if($res.status == 'success'){
+                                  if($res.code == 0){
+                                    $('#houtai').show();
+                                 }else{
+                                    $('#houtai').hide();
+                                 }
+
+                                }else{
+                                    showAlert("服务器异常");
+                                }
+                                
+                            }
+                        );
+                    }
+                </script>
+                <!-- <div id="cart" class="cart fr"> 
                     <img class="cart-icon" src="__IMG_PATH__/icon_cart_22_22.png">
-                </div>
+                </div> -->
                 <div id="user" class="user fr n">
                     <img class="user-icon" src="__IMG_PATH__/icon_my.png"> 
                 </div> 
             </div> 
             
-            <ul id="subnav" class="subnav subnav-shadow n">
-                <li><a href="/account/setting" target="">账号设置</a></li>
-                <li><a href="/account/order" target="">我的订单</a></li>
-                <li><a href="/account/balance" target="">我的余额</a></li>
-                <li><a href="/account/score" target="">我的积分</a></li>
-                <li><a href="/account/address" target="">我的地址</a></li>
+             <ul id="subnav" class="subnav subnav-shadow n">
+                <li><a href="" target="" id="a6">最新订单</a></li>
+                <li><a href="" target="" id="a7">历史订单</a></li>
+                <li><a href="" target="" id="a8">我的积分</a></li>
+                <li><a href="" target="" id="a9">我的收藏</a></li>
+                <li><a href="" target="" id="a10">账户设置</a></li>
                 <li><a id="sub-logout" href="" target="">退出</a></li>
             </ul>
         </div>
+
+        <!--------------------------- 购物车展示 -------------------------------->
+            <div class="shop-cart shadow n">
+                <div class="shop-head">
+                    购物车<a class="shop-clear">[清空]</a>
+                </div>
+                <div class="shop-body">    
+                    
+
+                    <div class="isnull">
+                        <span></span>
+                        <b>购物车空空如也</b>
+                    </div>
+                </div>
+                <div class="shop-bottom">
+                    <div class="bottom-price fl">总计：￥<label>32</label>
+                    </div>
+                    <div class="bottom-icon"></div>
+                    <div class="bottom-pay fr">
+                        <a id="cart-pay">结算</a>
+                    </div>
+                </div>
+        </div>
+<!--------------------------- 购物车展示结束 -------------------------------->
+
         <!--主体-->
         <div class="content">
             <!--左侧导航-->
@@ -74,39 +129,58 @@
                 <div class="menu-left">
                     <dl>
                         <dt>个人中心</dt>
-                        <dd class="menu-item">
+                        <dd class="menu-item active">
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_order.png" width="18px" height="18px">
                             </span>
-                        <a href="order">我的订单</a>
+                        <a href="" id="a1">最新订单</a>
                         </dd>
                         <dd class="menu-item">
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_address.png" width="18px" height="18px">
                             </span>
-                        <a href="address">送餐地址</a>
+                        <a href="" id="a2">历史订单</a>
                         </dd> 
                         <dd class="menu-item">
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_score.png" width="18px" height="18px">
                             </span>
-                        <a href="score">我的积分</a>
+                        <a href="" id="a3">我的积分</a>
                         </dd>
                         <dd class="menu-item">
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_balance.png" width="18px" height="18px">
                             </span>
-                        <a href="balance">我的余额</a>
+                        <a href="" id="a4">店铺收藏</a>
                         </dd>
-                        <dd class="menu-item active">
+                        <dd class="menu-item ">
                             <span class="left-icon">
                                 <img src="__IMG_PATH__/icon_settings.png" width="18px" height="18px">
                             </span>
-                        <a href="setting">账户设置</a>
+                        <a href="" id="a5">账户设置</a>
                         </dd>
                     </dl>
                 </div>
             </div>
+            
+            <!-- 赋值href -->
+            <script>
+                $username = $.cookie('userId');
+                $('#order').attr('href', '/index/OrderList/order/username/'+$username);
+
+                $('#a1').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a2').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a3').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a4').attr('href', '/index/User/collect/username/'+$username);
+                $('#a5').attr('href', '/index/Setting/setting/username/'+$username);
+
+                $('#a6').attr('href', '/index/OrderList/order/username/'+$username);
+                $('#a7').attr('href', '/index/OrderHistory/scan_history/username/'+$username);
+                $('#a8').attr('href', '/index/jifen/score/username/'+$username);
+                $('#a9').attr('href', '/index/User/collect/username/'+$username);
+                $('#a10').attr('href', '/index/Setting/setting/username/'+$username);
+            </script>
+
             <!--右侧内容-->
             <div class="content-right fl">
                 <div class="summary fl">
@@ -115,33 +189,41 @@
                 <div class="accountform" id="form-settings">
                     <div>
                         <div class="accountformfield">
-                            <label>我的饭组</label> <span id="myFanzu">&nbsp;</span>
+                            <label>我的饭组：</label> <span id="myFanzu">订饭组&nbsp;</span>
                         </div>
                         <div class="accountformfield">
-                            <label>姓名</label><input id="name" placeholder="请输入您的姓名">
+                            <label>姓名：</label><input id="name" placeholder="请输入您的姓名">
                             <div class="accountformfield-hint form-error">
                                 <span id="error-name"></span>
                             </div>
                         </div>
                         <div class="accountformfield phonefield">
-                            <label>手机号</label><span id="pn"></span>
+                            <label>手机号：</label><span id="pn"></span>
                             <div class="accountformfield-hint">
                                 <span></span>
                             </div>
                         </div>  
                         <div class="accountformfield passwordfield">
-                            <label>密码</label><span>******</span>
+                            <label>密码：</label><span>*******</span>
                             <button id="btn-update-pwd">修改密码</button>
                             <div class="accountformfield-hint">
                                 <span></span>
                             </div>
                         </div> 
-                        <div class="accountformfield emailfield">
+                        <!-- <div class="accountformfield emailfield">
                             <label>我的邮箱</label><input id="email" placeholder="请输入邮箱">
                             <div class="accountformfield-hint">
                                 <span></span>
                             </div>
-                        </div> 
+                        </div>  -->
+                        
+                        <!-- 总共多少单，成功多少单 -->
+                        <div class="accountformfield">
+                            <label>订单信息：</label> 
+                            <span id="myFanzu">总计&ensp;<i style="color: red;font-size: 16px">{$res1}</i> &ensp;单</span> &ensp;&ensp;|&ensp;&ensp;
+                           <span id="myFanzu">成功&ensp;<i style="color: red;font-size: 16px">{$res2}</i> &ensp;单</span>
+                        </div>
+
                     </div>
                     <div class="accountform-buttons">
                         <a id="save-settings" class="save-btn" href="#">保存</a>
@@ -151,19 +233,19 @@
                 <div class="accountform n" id="form-pwd">
                     <div> 
                         <div class="accountformfield">
-                            <label>原密码</label><input id="pwd" placeholder="">
+                            <label>原密码</label><input id="pwd" placeholder="请输入当前登录密码">
                             <div class="accountformfield-hint form-error">
                                 <span id="error-pwd"></span>
                             </div>
                         </div>
                         <div class="accountformfield">
-                            <label>新密码</label><input id="pwd2" placeholder="">
+                            <label>新密码</label><input id="pwd2" placeholder="请输入6-18位字母或数字密码">
                             <div class="accountformfield-hint form-error">
                                 <span id="error-pwd2"></span>
                             </div>
                         </div>
                         <div class="accountformfield">
-                            <label>确认新密码</label><input id="pwd3" placeholder="">
+                            <label>确认新密码</label><input id="pwd3" placeholder="请再次输入新的密码">
                             <div class="accountformfield-hint form-error">
                                 <span id="error-pwd3"></span>
                             </div>
@@ -176,20 +258,20 @@
             </div>
             <div class="clear"></div>
         </div>
-        <div class="footer-content">
+       <div class="footer-content">
               <div class="footer-content-entrance">
-                <a class="footer-content-link" href="/about.html?p=guanyuwomen">关于我们</a>
+                <a class="footer-content-link" href="/index/About/enter">关于我们</a>
                 <span class="footer-content-separator">|</span>
                 <a class="footer-content-link footer-content-weixing">关注微信
                 <img class="weixin-pic" src="__IMG_PATH__/qr_code.jpg">
                 </a>
                 <span class="footer-content-separator">|</span> 
-                <a class="footer-content-link" href="/about.html?p=tousujianyi">投诉建议</a>
+                <a class="footer-content-link" href="/index/About/enter">投诉建议</a>
                 <span class="footer-content-separator">|</span>
-                <a class="footer-content-link kaidian_address" href="/about.html?p=shangjiaruzhu">商家入驻</a>
+                <a class="footer-content-link kaidian_address" href="/index/About/enter">商家入驻</a>
 
               </div>
-              <div class="footer-content-copyright">©2016 dingfanzu.com <a target="_blank">京ICP证020666号</a> </div>
+              <div class="footer-content-copyright">©2017 订饭组 <a target="_blank">粤ICP备17106509号-1</a> </div>
         </div>
 
         <!--提示框-->
@@ -209,8 +291,29 @@
         <script src="__JS_PATH__/account.js"></script>
         <script src="__JS_PATH__/myinfo.js"></script> 
         <script src="__JS_PATH__/footer.js"></script>
-        <script type="text/javascript">
+
+        <script >
+        $(function(){ 
+
+        if($.cookie('userId'))
+        {
+            var userId=$.cookie('userId');
+            $('#header-user').html('hi，'+userId);
+            $('#header-user').show();
+            $('#header-login').hide(); 
+            $('#user').show();
+        }
+
+            $('#sub-logout').click(function(){
+            $.removeCookie('userId',{expires:7,path:'/'});//删除cookie 
+            location.href = '/';
+        });
+    });       
+ </script>
+
+        <script>
             $(function(){
+                //初始化设置
                 initSettings();
 
                 //修改密码
@@ -219,7 +322,7 @@
                     $("#form-pwd").show();
                 });
 
-                //保存设置
+                //保存设置（未有新项）
                 $("#save-settings").click(function(event) {
                     saveSettings();
                 });
@@ -250,31 +353,31 @@
                 } 
             }
 
+            // 保存设置
             function saveSettings(){
                 var username=$.cookie("userId");
                 var name=$("#name").val().trim();
-                var email=$("#email").val().trim();
+                // var email=$("#email").val().trim();
                 if(name.length<=0){
                     $("#error-name").html("请输入姓名");
                     return;
                 }
-                var postUrl="/ajax/saveSettings.php";  
+                var postUrl="/index/User/real_name";  
                     $.post(postUrl,  
                         {
                             username:username,
-                            name:name,
-                            email:email
+                            real_name:name,
+                            // email:email
                         },
-                        function(data,status,xhr) {   
-                           if(status=="success"){   
-                                $res= $.parseJSON(data); 
+                        function(data) { 
+                         $res= $.parseJSON(data);   
+                           if($res.status=="success"){                                  
                                 if($res.code=="0"){  
-                                    my_SaveValue("name",name); 
-                                    my_SaveValue("email",email);
+                                    
                                     showAlert("保存成功");
 
                                 }else if($res.code=="1"){
-                                    showAlert("保存失败");
+                                    showAlert("未曾改动");
                                 } 
                            }else{
                                 showAlert("服务器异常,请重试");
@@ -291,38 +394,56 @@
                 var pwd3=$("#pwd3").val().trim();
 
                 $("#error-pwd,#error-pwd2,#error-pwd3").html("");
-                if(pwd.length<6){ 
-                    $("#error-pwd").html("密码长度必须大于6位");
+                if(!/\w{6,18}/.test(pwd)){ 
+                    $("#error-pwd").html("请输入6-18位字母或数字密码");
                     return;
-                }else if(pwd2.length<6){ 
-                    $("#error-pwd2").html("密码长度必须大于6位");
+                }else if(!/\w{6,18}/.test(pwd2))
+                {
+                    $('#error-pwd2').html('请输入6-18位字母或数字密码');
                     return;
                 }else if(pwd2!=pwd3){
                     $("#error-pwd3").html("两次密码不一致");
                     return;
                 }
 
-                var postUrl="/ajax/saveNewPwd.php";  
+                var postUrl="/index/User/new_pwd";  
                     $.post(postUrl,  
                         {
                             username:username,
-                            pwd:pwd,
-                            pwd2:pwd2
+                            password:pwd,
+                            password2:pwd2
                         },
-                        function(data,status,xhr) {   
-                           if(status=="success"){    
-                                var res= $.parseJSON(data);  
+                        function(data) {
+                           var res= $.parseJSON(data); 
+                           if(res.status=="success"){                                     
                                 if(res.code=="0"){   
                                     showAlert("修改成功");
 
                                 }else if(res.code=="1"){
-                                    showAlert(res.msg);
-                                } 
+                                    showAlert('登录密码有误，请检查');
+                                }else if(res.code=='2'){
+                                    showAlert('密码未改动');
+                                }
                            }else{
                                 showAlert("服务器异常,请重试");
                            }
                        });  
             }
+
+
+       function showAlert(msg,url){ 
+        $("#alert").trigger('click');
+        $("#alert-msg").html(msg);
+         
+         if(url){
+            $("#btn-ok,#btn-close").click(function(event) {
+                window.location.href=url;
+            });
+         }
+        
+        }
         </script>
+
+
     </body>
 </html>

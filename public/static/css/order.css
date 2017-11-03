@@ -144,7 +144,7 @@
     position:absolute
 } 
 .order-info .delivery-card .card-header .line-through {
-    height:74px;
+    height:135px;
     left:-20px;
     border-right:3px solid #64b93c;
     bottom:-104px;
@@ -196,7 +196,7 @@
 }
 .order-info .order-operator .pay-btn {
     display:inline-block;
-    margin:10px 10px 10px ;
+    margin:-10px 25px 21px ;
     width:100px;
     height:30px;
     padding:0;  

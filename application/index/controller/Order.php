@@ -26,7 +26,6 @@ class Order extends Controller
 	public function order_info()
 	{
 		$post = input();
-
 		$shop_id = $post['shop_id'];
 		$username = $post['username'];
 

@@ -1,0 +1,124 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>-.-</title>
+<link rel="stylesheet" href="__CSS_PATH__reset.css">
+<link rel="stylesheet" href="__CSS_PATH__bootstrap-admin.css">
+<link rel="stylesheet" href="__CSS_PATH__backstage.css">
+<script src="__JS_PATH__jquery-1.8.3.js"></script> 
+<style type="text/css">
+    td{
+        height: 40px;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+<span class="main-title">订单列表</span>
+<div class="details">
+                    <div class="details_operation clearfix">
+
+                        <div class="fl">
+                        </div>
+                         
+                        <div class="fr"> 
+                            <div class="text">
+                                <span>
+                                <input type="text"  placeholder="搜索订单" class="search form-control" id="search" onkeypress="search()" >
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--表格-->
+                    <div id="cha">
+                    <table class="table  table-hover">
+                        <thead>
+                            <tr>
+                                <th width="10%">订单编号</th>
+                                <th width="15%">所属店铺</th> 
+                                <th width="10%">电话</th>
+                                <th width="15%">备注信息</th>
+                                <th width="5%">订单金额</th>
+                                <th width="10%">评分</th>
+                                <th width="15%">订单时间</th>
+                                <th width="10%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $res as $val}
+                            <tr>
+                                <td>{$val['order_id']}</td>
+                                <td>{$val['shop_name']}</td>
+                                <td>{$val['order_phone']}</td>
+                                <td>{$val['order_liuyan']}</td>
+                                <td>{$val['sf_price']}</td>
+                                <td>{$val['xing_count']}</td>
+                                <td>{$val['order_time']}</td>
+                                <td><a href="" onclick="del({$val['order_id']})">删除</a></td>
+                            </tr>
+                            {/foreach}
+                        <br /> 
+                        </tbody>
+                    </table>
+                {$page}  
+             </div> 
+        </div>
+     </body>
+ </html>
+
+<script type="text/javascript">
+        
+
+        // 搜索订单
+    function search(){
+        if(event.keyCode==13){
+            var val=document.getElementById("search").value;
+            var postUrl = '/admin/order/search';
+            $.post(postUrl,
+            { value:val},
+            function(data){
+                var timer = setTimeout(function(){
+                $("#cha").empty();
+                $('#cha').append(data);
+                },500);
+               
+            }
+
+          )
+        }
+    }
+
+
+    // 删除订单
+    function del(id){
+            if(window.confirm("真的要删除吗？")){
+
+                $.post("/admin/order/delorder/did/",
+                    {order_id:id},
+                    function(data){
+                         $res = $.parseJSON(data);
+                         if($res.status=='success'){
+                            if ($res.code=='0') {
+                                var setTimeout(function(){
+                                     alert('删除成功');
+                                     window.location='/admin/order/order';
+                                },500);
+                               
+                            }
+                            if ($res.code=='1') {
+                                alert('删除失败');
+                            }
+                         }
+                        
+                    });
+               
+            }
+    }
+     
+</script>
+</body>
+</html>
